@@ -1,0 +1,12 @@
+# Overrride status command to prevent build stamping.
+build --workspace_status_command=/bin/true
+
+# Skip manual and flaky tests in wildcards.
+build --build_tag_filters=-manual,-flaky,-integration-test
+test --test_tag_filters=-manual,-flaky,-integration-test
+
+# Use the build farm when performing build actions.
+# Schedule 128 concurrent jobs to leverage kraken's resources.
+# Perform up to 6 build actions locally before delegating to kraken.
+build --config=kraken --jobs=128 --local_execution_slots=6
+test --config=kraken --jobs=128 --local_execution_slots=6
