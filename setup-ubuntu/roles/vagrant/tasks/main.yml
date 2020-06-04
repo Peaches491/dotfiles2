@@ -1,7 +1,20 @@
 ---
 
-- name: Install Vagrant apt packages
-  apt:
-    pkg:
-    - vagrant
+- name: Install Vagrant signing key
+  apt_key:
+    id: D2BABDFD63EA9ECAB4E09C7228A873EA3C7C705F
+    keyserver: hkp://keyserver.ubuntu.com:80
   become: yes
+
+- name: Install Vagrant apt repository
+  apt_repository:
+    repo: deb https://vagrant-deb.linestarve.com/ any main
+  become: yes
+
+- name: Install Vagrant apt package
+  apt:
+    name: vagrant
+    update_cache: true
+  become: yes
+
+# See: https://computingforgeeks.com/install-latest-vagrant-on-ubuntu-debian-kali-linux/
