@@ -1,5 +1,10 @@
 ---
 
+# TODO: Switch to the Vagrant-approved method of installation 
+# (i.e from a download on their website:
+#   https://github.com/hashicorp/vagrant/issues/7529#issuecomment-229216232
+#   https://www.vagrantup.com/downloads.html
+
 - name: Install Vagrant signing key
   apt_key:
     id: D2BABDFD63EA9ECAB4E09C7228A873EA3C7C705F
@@ -14,7 +19,8 @@
 - name: Install Vagrant apt package
   apt:
     name: vagrant
-    update_cache: true
   become: yes
 
 # See: https://computingforgeeks.com/install-latest-vagrant-on-ubuntu-debian-kali-linux/
+# Apparantly HashiCorp refuses to maintain a regular PPA:
+#   https://github.com/hashicorp/vagrant-installers/issues/12
