@@ -37,4 +37,4 @@ script:
   set -euo pipefail
   export DOTFILES_PLATFORM=ubuntu
   sudo ./vagrant.sh up --no-provision
-  sudo ./vagrant.sh provision
+  sudo travis_wait 30 ./vagrant.sh provision
