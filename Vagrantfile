@@ -13,7 +13,7 @@ Vagrant.configure("2") do |config|
   #if not is_ci
 
   config.vm.provider "virtualbox" do |vm|
-    config.vagrant.plugins = ["vagrant-disksize"]
+    #config.vagrant.plugins = ["vagrant-disksize"]
     config.disksize.size = vagrant_disksize
     vm.memory = 4096
     vm.cpus = 2
