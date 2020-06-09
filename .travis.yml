@@ -36,4 +36,5 @@ script:
   set -euo pipefail
   export DOTFILES_PLATFORM=ubuntu
   sudo ./vagrant.sh up --no-provision
-  ./vagrant.sh provision
+  sudo ./vagrant.sh ssh -c "echo 'Hello, world!'"
+  sudo ./vagrant.sh provision
