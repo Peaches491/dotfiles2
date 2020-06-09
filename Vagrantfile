@@ -8,21 +8,19 @@ Vagrant.configure("2") do |config|
 
   config.vm.box = vagrant_box
 
-  #config.vm.synced_folder './', '/vagrant', type: 'rsync'
+  config.vm.synced_folder './', '/vagrant', type: 'rsync'
 
-  #if not is_ci
-
-  config.vm.provider "virtualbox" do |vm|
-    #config.vagrant.plugins = ["vagrant-disksize"]
-    config.disksize.size = vagrant_disksize
-    vm.memory = 4096
-    vm.cpus = 2
+  if not is_ci
+    config.vm.provider "virtualbox" do |vm|
+      config.vagrant.plugins = ["vagrant-disksize"]
+      config.disksize.size = vagrant_disksize
+      vm.memory = 4096
+      vm.cpus = 2
+    end
+  else
+    config.vm.provider "libvirt" do |vm|
+    end
   end
-
-  #else
-    #config.vm.provider "libvirt" do |vm|
-    #end
-  #end
 
   config.vm.provision "shell", inline: "ls -alh /"
   config.vm.provision "shell", inline: "ls -alh $HOME"
