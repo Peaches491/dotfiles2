@@ -13,6 +13,8 @@ cache:
 # Download vagrant and verify SHA
 before_install:
 - |
+  which travis_wait
+  exit 1
   curl -Os https://releases.hashicorp.com/vagrant/2.2.7/vagrant_2.2.7_x86_64.deb
   curl -Os https://releases.hashicorp.com/vagrant/2.2.7/vagrant_2.2.7_SHA256SUMS
   curl -Os https://releases.hashicorp.com/vagrant/2.2.7/vagrant_2.2.7_SHA256SUMS.sig
@@ -35,6 +37,7 @@ script:
 - |
   set -euo pipefail
   export DOTFILES_PLATFORM=ubuntu
+  which travis_wait
   sudo ./vagrant.sh up --no-provision
   sudo ./vagrant.sh ssh -c "echo 'Hello, world!'"
   travis_wait 30 sudo ./vagrant.sh provision
