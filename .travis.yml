@@ -13,6 +13,7 @@ cache:
 # Download vagrant and verify SHA
 before_install:
 - |
+  set -xeuo pipefail
   curl -Os https://releases.hashicorp.com/vagrant/2.2.7/vagrant_2.2.7_x86_64.deb
   curl -Os https://releases.hashicorp.com/vagrant/2.2.7/vagrant_2.2.7_SHA256SUMS
   curl -Os https://releases.hashicorp.com/vagrant/2.2.7/vagrant_2.2.7_SHA256SUMS.sig
@@ -23,24 +24,23 @@ before_install:
 # Install libvrt & KVM (see https://github.com/alvistack/ansible-role-virtualbox/blob/master/.travis.yml)
 install:
 - |
+  set -xeuo pipefail
   sudo apt-get update
   sudo apt-get install -y bridge-utils dnsmasq-base ebtables libvirt-bin libvirt-dev qemu-kvm qemu-utils ruby-dev
 - sudo dpkg -i vagrant_2.2.7_x86_64.deb
 - vagrant --version
 - sudo vagrant plugin install vagrant-libvirt
 - |
+  set -xeuo pipefail
   echo 'Install travis-pls utility'
   pip install git+https://github.com/naftulikay/travis-pls
-  which travis-pls
 
 # For testing 'libvirt' locally on OSX (Mojave):
 # https://github.com/vagrant-libvirt/vagrant-libvirt/issues/497#issuecomment-597564837
 script:
 - |
-  set -euo pipefail
-  set -x
+  set -xeuo pipefail
   export DOTFILES_PLATFORM=ubuntu
-  which travis_wait
   sudo $TRAVIS_BUILD_DIR/vagrant.sh up --no-provision
   sudo $TRAVIS_BUILD_DIR/vagrant.sh ssh -c "echo 'Hello, world!'"
   sudo /home/travis/virtualenv/python3.6.10/bin/travis-pls $TRAVIS_BUILD_DIR/vagrant.sh provision
