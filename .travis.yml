@@ -37,4 +37,4 @@ script:
   export DOTFILES_PLATFORM=ubuntu
   sudo ./vagrant.sh up --no-provision
   sudo ./vagrant.sh ssh -c "echo 'Hello, world!'"
-  sudo ./vagrant.sh provision
+  travis_wait 30 sudo ./vagrant.sh provision
