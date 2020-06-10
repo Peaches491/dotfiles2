@@ -14,14 +14,14 @@ install:
 # For testing 'libvirt' locally on OSX (Mojave):
 script:
 - |
-  set -xeuo pipefail
+  set -x
   export DOTFILES_PLATFORM=ubuntu
   sudo ./setup-$DOTFILES_PLATFORM/setup.sh
 - |
-  set -xeuo pipefail
+  set -x
   export DOTFILES_PLATFORM=ubuntu
   sudo ./config/config.sh
 - |
-  set -xeuo pipefail
+  set -x
   export DOTFILES_PLATFORM=ubuntu
   sudo '/vagrant/config/config.sh' vagrant
