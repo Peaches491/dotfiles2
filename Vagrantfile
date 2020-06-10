@@ -1,7 +1,9 @@
 vagrant_box = ENV.fetch("DOTFILES_VAGRANT_BOX")
 vagrant_disksize = ENV.fetch("DOTFILES_VAGRANT_DISKSIZE")
 setup_dir = ENV.fetch("DOTFILES_SETUP_DIR")
+
 is_ci = ENV.fetch("TRAVIS", false)
+provision_step = ENV.fetch("DOTFILES_PROVISION_STAGE", "all")
 
 Vagrant.configure("2") do |config|
   # Note: Make sure all listed plugins are installed in .travis.yml
@@ -26,9 +28,15 @@ Vagrant.configure("2") do |config|
   config.vm.provision "shell", inline: "ls -alh $HOME"
 
   # Setup as root user.
-  config.vm.provision "shell", inline: "/vagrant/#{setup_dir}/setup.sh"
+  if provision_step == "setup" or provision_step == "all"
+    config.vm.provision "shell", inline: "/vagrant/#{setup_dir}/setup.sh"
+  end
   # Configure as root user.
-  config.vm.provision "shell", inline: "/vagrant/config/config.sh"
+  if provision_step == "config" or provision_step == "all"
+    config.vm.provision "shell", inline: "/vagrant/config/config.sh"
+  end
   # Configure as non-root user.
-  config.vm.provision "shell", inline: "/bin/su --command '/vagrant/config/config.sh' vagrant"
+  if provision_step == "config_root" or provision_step == "all"
+    config.vm.provision "shell", inline: "/bin/su --command '/vagrant/config/config.sh' vagrant"
+  end
 end

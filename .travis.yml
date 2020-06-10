@@ -40,4 +40,18 @@ script:
   export DOTFILES_PLATFORM=ubuntu
   sudo $TRAVIS_BUILD_DIR/vagrant.sh up --no-provision
   sudo $TRAVIS_BUILD_DIR/vagrant.sh ssh -c "echo 'Hello, world!'"
+- |
+  set -xeuo pipefail
+  export DOTFILES_PLATFORM=ubuntu
+  export DOTFILES_PROVISION_STAGE=setup
+  sudo /home/travis/virtualenv/python3.6.10/bin/travis-pls $TRAVIS_BUILD_DIR/vagrant.sh provision
+- |
+  set -xeuo pipefail
+  export DOTFILES_PLATFORM=ubuntu
+  export DOTFILES_PROVISION_STAGE=config
+  sudo /home/travis/virtualenv/python3.6.10/bin/travis-pls $TRAVIS_BUILD_DIR/vagrant.sh provision
+- |
+  set -xeuo pipefail
+  export DOTFILES_PLATFORM=ubuntu
+  export DOTFILES_PROVISION_STAGE=config_root
   sudo /home/travis/virtualenv/python3.6.10/bin/travis-pls $TRAVIS_BUILD_DIR/vagrant.sh provision
