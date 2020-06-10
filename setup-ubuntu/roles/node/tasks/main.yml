@@ -3,6 +3,9 @@
 - name: Install NodeJS apt packages
   apt:
     pkg:
+    - libssl1.0-dev
+    - node-gyp
     - nodejs
+    - nodejs-dev
     - npm
   become: yes
