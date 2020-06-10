@@ -3,7 +3,7 @@
 #   ...and viewers like you!
 
 dist: bionic
-language: python
+language: node_js
 
 # Install libvrt & KVM (see https://github.com/alvistack/ansible-role-virtualbox/blob/master/.travis.yml)
 install:
