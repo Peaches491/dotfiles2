@@ -17,11 +17,5 @@ script:
   set -x
   export DOTFILES_PLATFORM=ubuntu
   sudo ./setup-$DOTFILES_PLATFORM/setup.sh
-- |
-  set -x
-  export DOTFILES_PLATFORM=ubuntu
   sudo ./config/config.sh
-- |
-  set -x
-  export DOTFILES_PLATFORM=ubuntu
-  sudo '/vagrant/config/config.sh' vagrant
+  sudo ./config/config.sh vagrant
