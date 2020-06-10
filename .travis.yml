@@ -5,53 +5,23 @@
 dist: bionic
 language: python
 
-# Cache the big Vagrant boxes
-cache:
-  directories:
-  - /home/travis/.vagrant.d/boxes
-
-# Download vagrant and verify SHA
-before_install:
-- |
-  curl -Os https://releases.hashicorp.com/vagrant/2.2.7/vagrant_2.2.7_x86_64.deb
-  curl -Os https://releases.hashicorp.com/vagrant/2.2.7/vagrant_2.2.7_SHA256SUMS
-  curl -Os https://releases.hashicorp.com/vagrant/2.2.7/vagrant_2.2.7_SHA256SUMS.sig
-  gpg --receive-key 51852D87348FFC4C
-  gpg --verify vagrant_2.2.7_SHA256SUMS.sig vagrant_2.2.7_SHA256SUMS
-  sha256sum -c vagrant_2.2.7_SHA256SUMS 2>&1 | grep OK
-
 # Install libvrt & KVM (see https://github.com/alvistack/ansible-role-virtualbox/blob/master/.travis.yml)
 install:
-- |
-  sudo apt-get update
-  sudo apt-get install -y bridge-utils dnsmasq-base ebtables libvirt-bin libvirt-dev qemu-kvm qemu-utils ruby-dev
-- sudo dpkg -i vagrant_2.2.7_x86_64.deb
-- vagrant --version
-- sudo vagrant plugin install vagrant-libvirt
 - |
   echo 'Install travis-pls utility'
   pip install git+https://github.com/naftulikay/travis-pls
 
 # For testing 'libvirt' locally on OSX (Mojave):
-# https://github.com/vagrant-libvirt/vagrant-libvirt/issues/497#issuecomment-597564837
 script:
 - |
   set -xeuo pipefail
   export DOTFILES_PLATFORM=ubuntu
-  sudo $TRAVIS_BUILD_DIR/vagrant.sh up --no-provision
-  sudo $TRAVIS_BUILD_DIR/vagrant.sh ssh -c "echo 'Hello, world!'"
+  ./setup-$DOTFILES_PLATFORM/setup.sh
 - |
   set -xeuo pipefail
   export DOTFILES_PLATFORM=ubuntu
-  export DOTFILES_PROVISION_STAGE=setup
-  sudo /home/travis/virtualenv/python3.6.10/bin/travis-pls $TRAVIS_BUILD_DIR/vagrant.sh provision
+  ./config/config.sh
 - |
   set -xeuo pipefail
   export DOTFILES_PLATFORM=ubuntu
-  export DOTFILES_PROVISION_STAGE=config
-  sudo /home/travis/virtualenv/python3.6.10/bin/travis-pls $TRAVIS_BUILD_DIR/vagrant.sh provision
-- |
-  set -xeuo pipefail
-  export DOTFILES_PLATFORM=ubuntu
-  export DOTFILES_PROVISION_STAGE=config_root
-  sudo /home/travis/virtualenv/python3.6.10/bin/travis-pls $TRAVIS_BUILD_DIR/vagrant.sh provision
+  sudo '/vagrant/config/config.sh' vagrant
