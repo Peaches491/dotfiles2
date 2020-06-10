@@ -16,11 +16,11 @@ script:
 - |
   set -xeuo pipefail
   export DOTFILES_PLATFORM=ubuntu
-  ./setup-$DOTFILES_PLATFORM/setup.sh
+  sudo ./setup-$DOTFILES_PLATFORM/setup.sh
 - |
   set -xeuo pipefail
   export DOTFILES_PLATFORM=ubuntu
-  ./config/config.sh
+  sudo ./config/config.sh
 - |
   set -xeuo pipefail
   export DOTFILES_PLATFORM=ubuntu
