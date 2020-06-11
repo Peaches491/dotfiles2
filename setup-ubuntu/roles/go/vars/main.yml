@@ -1,0 +1,9 @@
+---
+
+go_version: "1.14.4"
+go_download_url: "https://dl.google.com/go/go{{ go_version }}.linux-amd64.tar.gz"
+go_sha256: "aed845e4185a0b2a3c3d5e1d0a35491702c55889192bb9c30e67a3de6849c067"
+go_install_dest: "/usr/local"
+
+go_download_filename: "{{ go_download_url | basename }}"
+go_download_dest:  "/usr/local/{{ go_download_filename }}"
