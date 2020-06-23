@@ -17,13 +17,11 @@ source "$(worktree_active_project_worktree)/scripts/shell/zooxrc.sh"
 alias aws-mfa='oathtool --totp --base32 -w 1 "`cat ~/.aws/oathtool-mfa`"'
 alias vault-auth='VAULT_ADDR=https://vault.zooxlabs.com:8200 vault login -method=ldap username=chris'
 
-export m=master
 export dz=develop/zrn
 export rz=release/zrn
 export dc=develop/carta
 export rc=release/carta
 
-export om=origin/master
 export odz=origin/develop/zrn
 export orz=origin/release/zrn
 export odc=origin/develop/carta
