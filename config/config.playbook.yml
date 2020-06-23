@@ -1,7 +1,6 @@
 ---
 
 # TODO
-# * move wt functions from 3-cli-shortcuts to 3-worktree
 # * add zoox role with dep on shellrc and bazel
 #     link zoox shellrc file to `3-work.sh`
 #     link zoox bazelrc file to `work.bazelrc`
