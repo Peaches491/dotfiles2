@@ -19,4 +19,4 @@
   - vim
   - worktree
   - zshrc
-  - zoox
+  - { role: zoox, tags: [never, zoox] }
