@@ -4,10 +4,6 @@
 # * add zoox role with dep on shellrc and bazel
 #     link zoox shellrc file to `3-work.sh`
 #     link zoox bazelrc file to `work.bazelrc`
-# * add dep on shellrc to git role
-#     move m and om vars from 3-zoox.sh to 3-git.sh
-#     move g function from 3-cli-shortcuts to 3-git
-#     link 3-git.sh to shellrc
 - hosts: 127.0.0.1
   connection: local
   roles:
