@@ -10,3 +10,10 @@ test --test_tag_filters=-manual,-flaky,-integration-test
 # Perform up to 6 build actions locally before delegating to kraken.
 build --config=kraken --jobs=128 --local_execution_slots=6
 test --config=kraken --jobs=128 --local_execution_slots=6
+
+# Omit intermediate files when downloading action results from kraken. Only
+# download the files output by targets and their runfiles.
+# TODO: promote this to `bazelrc` when Zoox isn't using the experimental flags.
+fetch --experimental_remote_download_toplevel
+build --experimental_remote_download_toplevel
+test --experimental_remote_download_toplevel
