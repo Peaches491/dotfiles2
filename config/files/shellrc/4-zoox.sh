@@ -26,3 +26,5 @@ export odz=origin/develop/zrn
 export orz=origin/release/zrn
 export odc=origin/develop/carta
 export orc=origin/release/carta
+
+export KUBECONFIG="$HOME/.kube/config:$HOME/.kube/dev-aws:$HOME/.kube/prod1"

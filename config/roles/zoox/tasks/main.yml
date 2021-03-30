@@ -2,8 +2,8 @@
 
 - name: Link Zoox Shell RC file
   file:
-    src: "{{dotfiles_src_dir}}/shellrc/3-zoox.sh"
-    dest: "{{shellrc_config_dir}}/3-work.sh"
+    src: "{{dotfiles_src_dir}}/shellrc/4-zoox.sh"
+    dest: "{{shellrc_config_dir}}/4-work.sh"
     state: link
     force: yes
 
