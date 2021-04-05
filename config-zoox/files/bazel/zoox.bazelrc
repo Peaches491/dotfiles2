@@ -1,0 +1,26 @@
+# Reduce the set of downloaded intermediates to only those that comprise targets
+# and their runfiles (omit all intermediates, like .o files).
+fetch:toplevel --experimental_remote_download_toplevel
+build:toplevel --experimental_remote_download_toplevel --jobs=256
+
+# Download as little as possible.
+fetch:minimal --experimental_remote_download_minimal
+build:minimal --experimental_remote_download_minimal --jobs=512
+
+# Ensure everything runs on kraken instead of the local machine.
+build:nolocal --noremote_local_fallback
+
+# Overrride status command to prevent build stamping.
+build:nostamp --workspace_status_command=/bin/true
+
+# Use the build farm when performing build actions.
+# Schedule 128 concurrent jobs to leverage kraken's resources.
+# Perform up to 6 build actions locally before delegating to kraken.
+build --config=kraken --jobs=128 --local_execution_slots=6
+test --config=kraken --jobs=128 --local_execution_slots=6
+
+# Disable build stamping by default.
+build --config=nostamp
+
+# Skip manual and flaky tests in wildcards.
+test --test_tag_filters=-manual,-flaky,-integration-test

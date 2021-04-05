@@ -1,0 +1,15 @@
+---
+
+- name: Link Zoox Shell RC file
+  file:
+    src: "{{dotfiles_src_dir}}/shellrc/4-zoox.sh"
+    dest: "{{shellrc_config_dir}}/4-work.sh"
+    state: link
+    force: yes
+
+- name: Link Zoox Bazel RC file
+  file:
+    src: "{{dotfiles_src_dir}}/bazel/zoox.bazelrc"
+    dest: "~/.work.bazelrc"
+    state: link
+    force: yes

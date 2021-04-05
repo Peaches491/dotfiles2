@@ -1,0 +1,9 @@
+---
+
+tmux_config_dir: "{{dotfiles_config_dir}}/tmux"
+
+tmux_data_dir: "{{dotfiles_data_dir}}/tmux"
+tmux_plugins_data_dir: "{{tmux_data_dir}}/plugins"
+
+tmux_tpm_repo: https://github.com/tmux-plugins/tpm
+tmux_tpm_data_dir: "{{github_repos_data_dir}}/tmux-plugins/tpm"

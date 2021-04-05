@@ -1,0 +1,2 @@
+#!/bin/bash --norc
+exec clang-format-3.6
