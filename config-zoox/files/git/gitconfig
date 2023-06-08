@@ -2,6 +2,7 @@
   ap = add --patch
   clone = clone --recursive
   cm = commit
+  cmp = compare --url
   co = checkout
   cp = cherry-pick
   df = diff --patience --find-renames --find-copies-harder
@@ -27,6 +28,7 @@
   sl = stash list
   st = status --short --branch --ignore-submodules=dirty
   sw = switch
+  wip = commit -m wip
 [color]
   ui = true
 [core]
@@ -62,3 +64,5 @@
 [user]
   name = Christopher Patton
   email = chris@zoox.com
+[hub]
+  host = git.zooxlabs.com

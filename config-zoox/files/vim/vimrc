@@ -5,35 +5,35 @@
 " Initialize VimPlug and setup plugins.
 call plug#begin('~/.vim/plugged')
 Plug 'Chiel92/vim-autoformat' " Syntax-aware code formatting
-Plug 'PeterRincker/vim-argumentative' " Rearrange function arguments
+" Plug 'PeterRincker/vim-argumentative' " Rearrange function arguments
 " Plug 'SirVer/ultisnips' " Code snippet completion
 " Plug 'Valloric/YouCompleteMe' " Autocompletion and code fixes
 " Plug 'Xuyuanp/nerdtree-git-plugin' " Git integration with nerdtree
-Plug 'airblade/vim-gitgutter' " Show git diff in the gutter
+" Plug 'airblade/vim-gitgutter' " Show git diff in the gutter
 Plug 'altercation/vim-colors-solarized' " Solarized color theme for vim
 " Plug 'cespare/vim-toml' " Toml syntax highlighting
-Plug 'editorconfig/editorconfig-vim' " Editorconfig integration
-Plug 'junegunn/fzf' " Fuzzy file finder
-Plug 'junegunn/fzf.vim' " Custom selector implementation for FZF
+" Plug 'editorconfig/editorconfig-vim' " Editorconfig integration
+" Plug 'junegunn/fzf' " Fuzzy file finder
+" Plug 'junegunn/fzf.vim' " Custom selector implementation for FZF
 " Plug 'leafgarland/typescript-vim' " TypeScript syntax rules
-Plug 'mhinz/vim-grepper', { 'on': ['Grepper', '<Plug>(GrepperOperator)'] } " Integrate grep into quick-fix
+" Plug 'mhinz/vim-grepper', { 'on': ['Grepper', '<Plug>(GrepperOperator)'] } " Integrate grep into quick-fix
 " Plug 'posva/vim-vue' " Syntax highlighting and linting for Vue components
-Plug 'powerline/fonts' " Pre-patched and adjusted fonts for status line
-Plug 'roxma/vim-tmux-clipboard' " Sync Vim and Tmux copy buffers
+" Plug 'powerline/fonts' " Pre-patched and adjusted fonts for status line
+" Plug 'roxma/vim-tmux-clipboard' " Sync Vim and Tmux copy buffers
 " Plug 'rust-lang/rust.vim' " Rust syntax highlighting
 Plug 'scrooloose/nerdtree' " File navigation
-Plug 'tmux-plugins/vim-tmux' " Conveniences when editing Tmux configs
-Plug 'tpope/vim-abolish' " Assorted word-munging utilities
+" Plug 'tmux-plugins/vim-tmux' " Conveniences when editing Tmux configs
+" Plug 'tpope/vim-abolish' " Assorted word-munging utilities
 Plug 'tpope/vim-commentary' " Easy (un)commenting of code blocks
 Plug 'tpope/vim-fugitive' " Integrated git commands
-Plug 'tpope/vim-obsession' " Intelligent and automatic session management
-Plug 'tpope/vim-repeat' " Better command classification for `.`
-Plug 'tpope/vim-rhubarb' " GitHub integration for fugitive
-Plug 'tpope/vim-surround' " Easily manipulate surrounding symbols
+" Plug 'tpope/vim-obsession' " Intelligent and automatic session management
+" Plug 'tpope/vim-repeat' " Better command classification for `.`
+" Plug 'tpope/vim-rhubarb' " GitHub integration for fugitive
+" Plug 'tpope/vim-surround' " Easily manipulate surrounding symbols
 " Plug 'vim-airline/vim-airline' " Better status line
 " Plug 'vim-airline/vim-airline-themes' " Color theme support for airline
-Plug 'vim-utils/vim-man' " Open man pages in vim
-Plug 'vim-utils/vim-troll-stopper' " Convert elusive unicode characters to ASCII
+" Plug 'vim-utils/vim-man' " Open man pages in vim
+" Plug 'vim-utils/vim-troll-stopper' " Convert elusive unicode characters to ASCII
 " Plug 'w0rp/ale' " Asynchronous Lint Engine
 call plug#end()
 
@@ -61,37 +61,37 @@ let g:mapleader=','
 " Airline
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-let g:airline#extensions#ale#enabled=1
-let g:airline#extensions#tabline#enabled=1
-let g:airline_theme='solarized'
-let g:airline_powerline_fonts=1
+" let g:airline#extensions#ale#enabled=1
+" let g:airline#extensions#tabline#enabled=1
+" let g:airline_theme='solarized'
+" let g:airline_powerline_fonts=1
 
 " ALE
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-let g:ale_completion_enabled=1
+" let g:ale_completion_enabled=1
 
-nmap <C-p> <Plug>(ale_previous_wrap)
-nmap <C-n> <Plug>(ale_next_wrap)
+" nmap <C-p> <Plug>(ale_previous_wrap)
+" nmap <C-n> <Plug>(ale_next_wrap)
 
-augroup AleSettings
-  autocmd!
-  autocmd FileType python let b:ale_linters=['flake8', 'mypy', 'yapf']
-augroup END
+" augroup AleSettings
+"   autocmd!
+"   autocmd FileType python let b:ale_linters=['flake8', 'mypy', 'yapf']
+" augroup END
 
 " Argumentative
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-nmap [; <Plug>Argumentative_Prev
-nmap ]; <Plug>Argumentative_Next
-xmap [; <Plug>Argumentative_XPrev
-xmap ]; <Plug>Argumentative_XNext
-nmap <; <Plug>Argumentative_MoveLeft
-nmap >; <Plug>Argumentative_MoveRight
-xmap i; <Plug>Argumentative_InnerTextObject
-xmap a; <Plug>Argumentative_OuterTextObject
-omap i; <Plug>Argumentative_OpPendingInnerTextObject
-omap a; <Plug>Argumentative_OpPendingOuterTextObject
+" nmap [; <Plug>Argumentative_Prev
+" nmap ]; <Plug>Argumentative_Next
+" xmap [; <Plug>Argumentative_XPrev
+" xmap ]; <Plug>Argumentative_XNext
+" nmap <; <Plug>Argumentative_MoveLeft
+" nmap >; <Plug>Argumentative_MoveRight
+" xmap i; <Plug>Argumentative_InnerTextObject
+" xmap a; <Plug>Argumentative_OuterTextObject
+" omap i; <Plug>Argumentative_OpPendingInnerTextObject
+" omap a; <Plug>Argumentative_OpPendingOuterTextObject
 
 " Autoformat
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -175,50 +175,50 @@ augroup END
 " EditorConfig
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-let g:EditorConfig_exclude_patterns=['fugitive://.*']
+" let g:EditorConfig_exclude_patterns=['fugitive://.*']
 
 " FZF
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-nnoremap <C-f> :FZF<CR>
-
-let g:fzf_colors =
-      \{
-      \  'fg':      ['fg', 'Normal'],
-      \  'bg':      ['bg', 'Normal'],
-      \  'hl':      ['fg', 'Comment'],
-      \  'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
-      \  'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
-      \  'hl+':     ['fg', 'Statement'],
-      \  'info':    ['fg', 'PreProc'],
-      \  'border':  ['fg', 'Ignore'],
-      \  'prompt':  ['fg', 'Conditional'],
-      \  'pointer': ['fg', 'Exception'],
-      \  'marker':  ['fg', 'Keyword'],
-      \  'spinner': ['fg', 'Label'],
-      \  'header':  ['fg', 'Comment'],
-      \}
+" nnoremap <C-f> :FZF<CR>
+" 
+" let g:fzf_colors =
+"       \{
+"       \  'fg':      ['fg', 'Normal'],
+"       \  'bg':      ['bg', 'Normal'],
+"       \  'hl':      ['fg', 'Comment'],
+"       \  'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+"       \  'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+"       \  'hl+':     ['fg', 'Statement'],
+"       \  'info':    ['fg', 'PreProc'],
+"       \  'border':  ['fg', 'Ignore'],
+"       \  'prompt':  ['fg', 'Conditional'],
+"       \  'pointer': ['fg', 'Exception'],
+"       \  'marker':  ['fg', 'Keyword'],
+"       \  'spinner': ['fg', 'Label'],
+"       \  'header':  ['fg', 'Comment'],
+"       \}
 
 " GitGutter
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-let g:gitgutter_diff_args='--patience' " Add flags to git diff.
-let g:gitgutter_eager=0 " Only redraw gutter on buffer save / open.
+" let g:gitgutter_diff_args='--patience' " Add flags to git diff.
+" let g:gitgutter_eager=0 " Only redraw gutter on buffer save / open.
 
 " Grepper
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-let g:grepper={ 'tools': ['rg', 'git'], 'next_tool': '<C-g>' }
-
-" Run grepper on motion and selection.
-nmap gs <Plug>(GrepperOperator)
-xmap gs <Plug>(GrepperOperator)
-
-" Open the grepper prompt.
-nnoremap <Leader>G :Grepper<CR>
-
-" Search for the word under the cursor.
-nnoremap <Leader>* :Grepper -cword -noprompt<CR>
+" let g:grepper={ 'tools': ['rg', 'git'], 'next_tool': '<C-g>' }
+" 
+" " Run grepper on motion and selection.
+" nmap gs <Plug>(GrepperOperator)
+" xmap gs <Plug>(GrepperOperator)
+" 
+" " Open the grepper prompt.
+" nnoremap <Leader>G :Grepper<CR>
+" 
+" " Search for the word under the cursor.
+" nnoremap <Leader>* :Grepper -cword -noprompt<CR>
 
 " NERDTree
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -229,60 +229,60 @@ nnoremap <Leader>t :NERDTreeToggle<CR>
 " Rust.Vim
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-let g:rust_recommended_style=0
+" let g:rust_recommended_style=0
 
 " TrollStopper
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-augroup AutoTrollStopper
-  autocmd!
-  autocmd BufWritePre * silent! :TrollStop<CR>
-augroup END
+" augroup AutoTrollStopper
+"   autocmd!
+"   autocmd BufWritePre * silent! :TrollStop<CR>
+" augroup END
 
 " UltiSnips
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-let g:UltiSnipsExpandTrigger='<C-Space>'
-let g:UltiSnipsListSnippets='<C-Tab>'
-let g:UltiSnipsJumpForwardTrigger='<C-j>'
-let g:UltiSnipsJumpBackwardTrigger='<C-k>'
+" let g:UltiSnipsExpandTrigger='<C-Space>'
+" let g:UltiSnipsListSnippets='<C-Tab>'
+" let g:UltiSnipsJumpForwardTrigger='<C-j>'
+" let g:UltiSnipsJumpBackwardTrigger='<C-k>'
 
 " Vim-Vue
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-augroup VueComponentSyntax
-  autocmd!
-  autocmd FileType vue syntax sync fromstart
-augroup END
+" augroup VueComponentSyntax
+"   autocmd!
+"   autocmd FileType vue syntax sync fromstart
+" augroup END
 
 " YouCompleteMe
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-" YCM doesn't have completers for some filetypes.
-if !exists('g:ycm_filetype_blacklist')
-  let g:ycm_filetype_blacklist={}
-endif
-let g:ycm_filetype_blacklist.help=1
-let g:ycm_filetype_blacklist.vim=1
+" " YCM doesn't have completers for some filetypes.
+" if !exists('g:ycm_filetype_blacklist')
+"   let g:ycm_filetype_blacklist={}
+" endif
+" let g:ycm_filetype_blacklist.help=1
+" let g:ycm_filetype_blacklist.vim=1
 
-" Load extra conf without prompting.
-let g:ycm_global_ycm_extra_conf='~/.ycm_extra_conf.py'
-let g:ycm_confirm_extra_conf=0
+" " Load extra conf without prompting.
+" let g:ycm_global_ycm_extra_conf='~/.ycm_extra_conf.py'
+" let g:ycm_confirm_extra_conf=0
 
-" Automatically open and close the preview window during completion.
-let g:ycm_add_preview_to_completeopt=1
-let g:ycm_autoclose_preview_window_after_completion=1
-let g:ycm_autoclose_preview_window_after_insertion=1
+" " Automatically open and close the preview window during completion.
+" let g:ycm_add_preview_to_completeopt=1
+" let g:ycm_autoclose_preview_window_after_completion=1
+" let g:ycm_autoclose_preview_window_after_insertion=1
 
-" Perform completion while writing comments and strings.
-let g:ycm_complete_in_comments=1
-let g:ycm_complete_in_strings=1
+" " Perform completion while writing comments and strings.
+" let g:ycm_complete_in_comments=1
+" let g:ycm_complete_in_strings=1
 
-" Do not try to complete using text from comments or strings.
-let g:ycm_collect_identifiers_from_comments_and_strings=0
+" " Do not try to complete using text from comments or strings.
+" let g:ycm_collect_identifiers_from_comments_and_strings=0
 
-" Get completion text from language-specific syntax files.
-let g:ycm_seed_identifiers_with_syntax=1
+" " Get completion text from language-specific syntax files.
+" let g:ycm_seed_identifiers_with_syntax=1
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Settings
@@ -351,7 +351,8 @@ set noerrorbells                " No beeps on errors.
 set nofoldenable                " Do not open file folded.
 set nojoinspaces                " Do not use multiple spaces when joining after punctuation.
 set nopaste                     " Do not default to paste mode.
-set noswapfile                  " Don't use swap files.
+set noswapfile                  " Do not use swap files.
+set nowrap                      " Do not soft wrap lines by default.
 set number                      " Display line numbers.
 set path=,,.,**,/usr/include,/usr/local/include
 set scrolloff=5                 " Keep min of N lines above/below cursor.
@@ -364,7 +365,7 @@ set smartcase                   " Searches are case-sensitive only if caps used.
 set smarttab                    " Tabs and backspaces at the start of a line indent the line one level.
 set splitright splitbelow       " Open splits below and to the right.
 set synmaxcol=2000              " Only matches syntax on first N columns of each line.
-set textwidth=80                " Hard wrap at N characters.
+" set textwidth=80                " Hard wrap at N characters.
 set ttyfast                     " Smoother redrawing.
 set viminfo='20,\"500,%         " Adjust viminfo contents.
 set virtualedit=block           " Allow the cursor to move to columns without text.
@@ -372,12 +373,11 @@ set wildignore=*.sw?,*.pyc      " Ignore generated files in the source tree.
 set wildignorecase              " Tab completion is case-insensitive.
 set wildmenu                    " Tab completion navigable menu is enabled.
 set wildmode=list:longest,full  " Tab completion lists matches, then opens wildmenu on next <Tab>.
-set wrap                        " Soft wrap lines.
 set wrapscan                    " Searching wraps to start of file when end is reached.
 
 augroup LanguageSpecificOverrides
   autocmd!
-  autocmd FileType python setlocal foldmethod=indent | let b:indent_size=4
+  autocmd FileType bzl,python setlocal foldmethod=indent | let b:indent_size=4
   autocmd FileType make setlocal noexpandtab
 augroup END
 

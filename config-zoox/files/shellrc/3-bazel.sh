@@ -7,7 +7,7 @@ function skyquery() {
 }
 
 function filequery() {
-  xargs -I{} \
-    bazel query "$@" --universe_scope=//... --order_output=no \
-    'kind(rule, allrdeps(set({}), 1))'
+  files=$(cat | tr '[[:space:]]' ' ')
+  bazel query "$@" --universe_scope=//... --order_output=no \
+    "kind(rule, allrdeps(set($files), 1))"
 }
