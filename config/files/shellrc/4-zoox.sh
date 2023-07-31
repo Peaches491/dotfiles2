@@ -42,7 +42,6 @@ export odc=origin/develop/carta
 export orc=origin/release/carta
 
 export KUBECONFIG="$HOME/.kube/config"
-export TZ=America/Los_Angeles
 
 function coowners() {
   git grep -l "$@" -- '*OWNERS' |
