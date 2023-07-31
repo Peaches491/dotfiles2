@@ -3,15 +3,14 @@
 - hosts: 127.0.0.1
   connection: local
   roles:
-  - bashrc
-  - cargo
-  - clang-format
-  - dircolors
-  - fzf
-  - git
-  - ssh-agent-canonicalize
-  - tmux
-  - vim
-  - worktree
-  - zshrc
-  - zoox
+    - {role: bashrc, tags: [bashrc]}
+    - {role: cargo, tags: [cargo]}
+    - {role: dircolors, tags: [dircolors]}
+    - {role: fzf, tags: [fzf]}
+    - {role: git, tags: [git]}
+    - {role: ssh-agent-canonicalize, tags: [ssh-agent-canonicalize]}
+    - {role: tmux, tags: [tmux]}
+    - {role: vim, tags: [vim]}
+    - {role: worktree, tags: [worktree]}
+    - {role: zshrc, tags: [zshrc]}
+    - {role: zoox, tags: [never, zoox]}
