@@ -32,10 +32,16 @@
 [color]
   ui = true
 [core]
-  excludesfile = ~/.gitignore
   fileMode = true
+  pager = delta
   preloadIndex = true
+[delta]
+  light = true  # set to true if you're in a terminal w/ a light background color (e.g. the default macOS terminal)
+  line-numbers = true
+  navigate = true # use n and N to move between diff sections
+  side-by-side = false
 [diff]
+  colorMoved = default
   renamelimit = 0
 [fetch]
   prune = true
@@ -46,6 +52,8 @@
   required = true
 [github]
   user = chpatton013
+[interactive]
+  diffFilter = delta --color-only
 [merge]
   tool = vimdiff
   conflictstyle = diff3
