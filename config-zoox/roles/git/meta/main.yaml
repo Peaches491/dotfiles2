@@ -1,6 +1,0 @@
----
-
-dependencies:
-- cargo
-- source-releases
-- xdg
