@@ -52,6 +52,8 @@
   required = true
 [github]
   user = chpatton013
+[hub]
+  host = github.com
 [interactive]
   diffFilter = delta --color-only
 [merge]
@@ -71,6 +73,6 @@
   enabled = true
 [user]
   name = Christopher Patton
-  email = chris@zoox.com
-[hub]
-  host = git.zooxlabs.com
+  email = chpatton013@gmail.com
+[includeIf "hasconfig:remote.*.url:https://git.zooxlabs.com/**"]
+  path = ~/.work.gitconfig

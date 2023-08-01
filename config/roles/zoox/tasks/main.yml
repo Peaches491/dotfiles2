@@ -13,3 +13,10 @@
     dest: "~/.work.bazelrc"
     state: link
     force: yes
+
+- name: Link Zoox GitConfig file
+  file:
+    src: "{{dotfiles_src_dir}}/git/zoox.gitconfig"
+    dest: "~/.work.gitconfig"
+    state: link
+    force: yes

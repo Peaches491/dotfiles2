@@ -11,9 +11,9 @@ common --show_timestamps
 clean --async
 
 # Disable runfiles links by default
-# build --nobuild_runfile_links
+build --nobuild_runfile_links
 
 # Show stdout and stderr output only from failing test targets.
 test --test_output=errors --test_summary=terse
 
-try-import /home/chris/.work.bazelrc
+try-import ~/.work.bazelrc
