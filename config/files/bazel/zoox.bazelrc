@@ -8,29 +8,22 @@ fetch:minimal --experimental_remote_download_minimal
 build:minimal --experimental_remote_download_minimal --jobs=150
 
 # Ensure everything runs on kraken instead of the local machine.
-build:nolocal --noremote_local_fallback
+build:nolocal --noremote_local_fallback --local_execution_slots=0
 
 # Overrride status command to prevent build stamping.
 build:nostamp --workspace_status_command=/bin/true
 
-# Use the build farm when performing build actions.
-# Schedule 128 concurrent jobs to leverage kraken's resources.
-# Perform up to 6 build actions locally before delegating to kraken.
-# build --config=kraken --jobs=100
-build --config=kraken --jobs=50 --local_execution_slots=2
-# build --config=kraken --jobs=50
-# build --config=sandboxed
-# build --jobs=4
-
+# Display abundant debug information and run in a sandbox.
 build:debug --subcommands --experimental_ui_max_stdouterr_bytes=-1 --config=sandboxed
 
-# Build with Clang by default
-# Clang finds more build failures locally than GCC.
-# build --config=clang
-
-# Disable build stamping by default.
-# build --config=nostamp
-
 # Skip manual tests.
-# build --build_tag_filters=-manual
-# test --test_tag_filters=-manual
+build:nomanual --build_tag_filters=-manual,-flaky,-integration-test
+test:nomanual --test_tag_filters=-manual,-flaky,-integration-test
+
+# Do not skip manual tests.
+build:manual --build_tag_filters=+manual,+flaky,+integration-test
+test:manual --test_tag_filters=+manual,+flaky,+integration-test
+
+build --config=clang --config=nostamp --config=nomanual
+
+try-import ~/.work-kraken.bazelrc
