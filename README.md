@@ -83,7 +83,6 @@ export DOTFILES_PLATFORM=archlinux
 
 ## TODO
 
-* [ibazel](https://github.com/bazelbuild/bazel-watcher/releases)
 * build zsh from source
 * zooxbin: executable that checks the current driving repo, else checks the rest
   of the PATH
