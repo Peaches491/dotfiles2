@@ -7,7 +7,7 @@ function ll() {
 }
 
 function la() {
-  l --almost-all "$@"
+  l -l --all "$@"
 }
 
 function catr() {
@@ -48,4 +48,8 @@ function eO() {
 
 function ep() {
   e -p "$@"
+}
+
+function cl() {
+  clear
 }

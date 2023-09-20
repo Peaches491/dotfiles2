@@ -51,7 +51,7 @@
   process = git-lfs filter-process
   required = true
 [github]
-  user = chpatton013
+  user = peaches491
 [hub]
   host = github.com
 [init]
@@ -74,7 +74,7 @@
 [rerere]
   enabled = true
 [user]
-  name = Christopher Patton
-  email = chpatton013@gmail.com
+  name = Daniel Miller
+  email = peaches491@gmail.com
 [includeIf "hasconfig:remote.*.url:https://git.zooxlabs.com/**"]
   path = ~/.work.gitconfig

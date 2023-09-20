@@ -9,6 +9,9 @@ augroup FileTypeAssociation
   autocmd BufNewFile,BufRead *.jsx setlocal filetype=javascript.jsx
   autocmd BufNewFile,BufRead *.launch,*.plist setlocal filetype=xml
   autocmd BufNewFile,BufRead *.make setlocal filetype=make
+  autocmd BufNewFile,BufRead *.pbtxt setlocal filetype=pbtxt
+  autocmd BufNewFile,BufRead *.pbjson setlocal filetype=json
+  autocmd BufNewFile,BufRead *.proto setlocal filetype=proto
   autocmd BufNewFile,BufRead *.snippets setlocal filetype=snippets
   autocmd BufNewFile,BufRead *.tsx setlocal filetype=typescript.tsx
   autocmd BufNewFile,BufRead *.txt,README,INSTALL,NEWS,TODO setlocal filetype=text
@@ -88,6 +91,27 @@ Plug 'yuezk/vim-js', {'for': ['javascript']} |
   \ Plug 'HerringtonDarkholme/yats.vim', {'for': ['typescript']} |
   \ Plug 'maxmellon/vim-jsx-pretty', {'for': ['javascript.jsx', 'typescript.tsx']} |
   \ Plug 'posva/vim-vue', {'for': ['vue']}
+
+
+Plug 'nacitar/a.vim' " Switch between header and source quickly. (Fork of vim-scripts/a.vim)
+
+Plug 'tpope/vim-surround' " Mappings to change surrounding elements (brackets, quotes, tags, etc)
+
+Plug 'tpope/vim-tbone' " Utilities to copy/past from TMux buffers (:Tyank, :Tput)
+
+" Not sure if needed...
+" Plug 'vim-scripts/ReplaceWithRegister' " Replace text with contents of register
+
+Plug 'cybrown-zoox/vim-pbtxt', {'for': ['pbtxt']} " Syntax highlighting for pbtxt files
+
+Plug 'vim-scripts/openscad.vim', {'for': ['openscad']} " Syntax highlighting for OpenSCAD
+
+Plug 'rust-lang/rust.vim', {'for': ['rust']} " Syntax highlighting for Rust
+
+Plug 'tpope/vim-rhubarb' " Support for Github Enterprise URLs
+let g:github_enterprise_urls = ['https://git.zooxlabs.com']
+
+Plug 'google/vim-jsonnet' " Syntax highlighting for Jsonnet files
 
 call plug#end()
 
@@ -274,6 +298,18 @@ nnoremap <Leader>f :Autoformat<CR>
 xnoremap <Leader>f :Autoformat<CR>
 nnoremap <Leader>F :call AutoFormatToggle()<CR>
 
+" Zoox Zfix formatting
+function ZfixFile(filename, zfix_args)
+  execute "w"
+  execute "!".$ZOOX_WORKSPACE_ROOT."/ci/file_validators/validate ".a:zfix_args." --fix ".a:filename
+  execute "e"
+endfunction
+
+" Run just the Python 'black' validator
+" TODO: Dynamically select between clang, black, buildifier, etc
+nmap <F9> :call ZfixFile('%', '--validator-filter=black')<CR>
+nmap <F10> :call ZfixFile('%', '')<CR
+
 " Color theme
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -281,6 +317,11 @@ set background=light
 set t_Co=256                  " Use as many colors as your terminal supports
 set term=screen-256color      " Use 256-color screen emulation
 silent! colorscheme solarized " Must be silent so Plug does not fail when installing for the first time
+
+" Better handling of GitGutter background color
+let g:gitgutter_set_sign_backgrounds = 0
+highlight SignColumn ctermbg=lightgrey
+
 
 " Local overrides for specific filetypes
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
