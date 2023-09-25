@@ -31,7 +31,15 @@
   with_items:
   - 0-misc.zsh
   - 1-modules.zsh
+  - 1-plugins.zsh
   - 2-bindings.zsh
   - 2-completion.zsh
   - 2-history.zsh
   - 4-prompt.zsh
+
+- name: Link Zsh plugins file
+  file:
+    src: "{{dotfiles_src_dir}}/zshrc/zsh_plugins.txt"
+    dest: "~/.zsh_plugins.txt"
+    state: link
+    force: yes

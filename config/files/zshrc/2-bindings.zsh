@@ -5,6 +5,9 @@ bindkey -M vicmd "?" history-incremental-search-forward
 bindkey -M vicmd "//" history-beginning-search-backward
 bindkey -M vicmd "??" history-beginning-search-forward
 
+# Classic EMACS style hostory searching
+bindkey '^R' history-incremental-search-backward
+
 # Rebind arrow keys.
 bindkey '\e[A' up-line-or-history
 bindkey '\eOA' up-line-or-history

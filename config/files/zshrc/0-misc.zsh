@@ -8,7 +8,7 @@ setopt AUTO_PUSHD
 setopt CORRECT
 
 # Use Bash- and Ksh-style array indices (0-based).
-setopt KSH_ARRAYS
+# setopt KSH_ARRAYS
 
 # Allow piping to multiple outputs.
 setopt MULTIOS
@@ -39,3 +39,9 @@ setopt VI
 
 # Report runtime of commands that take longer than 5 seconds of user time.
 export REPORTTIME=5
+
+# If ZSH is unable to find glob matches (e.g. for HEAD^), pass the bad match
+# onto the command. Fixes:
+#   > git show HEAD^
+#   zsh: no matches found: HEAD^
+unsetopt nomatch

@@ -1,0 +1,4 @@
+---
+
+antidote_repo: https://github.com/mattmc3/antidote
+antidote_data_dir: "{{github_repos_data_dir}}/mattmc3/antidote"

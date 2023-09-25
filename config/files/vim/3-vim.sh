@@ -1,3 +1,7 @@
+function e() {
+  "$EDITOR" "$@"
+}
+
 function v() {
   vim "$@"
 }

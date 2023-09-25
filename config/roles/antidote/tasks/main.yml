@@ -1,0 +1,22 @@
+---
+
+- name: Download antidote repository
+  git:
+    repo: "{{antidote_repo}}"
+    dest: "{{antidote_data_dir}}"
+    depth: 1
+
+- name: Render antidote Vars template file
+  template:
+    src: vars.sh
+    dest: "{{zshrc_config_dir}}/0-antidote.sh"
+    mode: 0400
+
+- name: Link antidote Shell RC file
+  file:
+    src: "{{dotfiles_src_dir}}/antidote/{{item}}"
+    dest: "{{shellrc_config_dir}}/{{item}}"
+    state: link
+    force: yes
+  with_items:
+  - 3-antidote.sh

@@ -1,6 +1,6 @@
 export WORKTREE_WORKTREE_ROOT=~/driving
 export WORKTREE_PRIMARY_PROJECT=root
-export WORKTREE_BRANCH_NAME_PREFIX=user/chris/
+export WORKTREE_BRANCH_NAME_PREFIX="user/$USER/"
 #export WORKTREE_BRANCH_NAME_SUFFIX=""
 #export WORKTREE_BASE_BRANCH=master
 #export WORKTREE_REMOTE=origin
@@ -21,7 +21,7 @@ fi
 
 export VAULT_ADDR='https://vault.zooxlabs.com:8200'
 alias aws-mfa='oathtool --totp --base32 -w 1 "`cat ~/.aws/oathtool-mfa`"'
-alias vault-auth='vault login -method=oidc username=chris'
+alias vault-auth="VAULT_ADDR=https://vault.zooxlabs.com:8200 vault login -method=oidc username=$USER"
 
 if which hub >/dev/null; then
   alias git=hub
@@ -31,7 +31,7 @@ export GITHUB_HOST=git.zooxlabs.com
 if [ -f "$(readlink -e ~/.github-token)" ]; then
   export GITHUB_TOKEN="$(cat ~/.github-token)"
 fi
-export GITHUB_USER=chris
+export GITHUB_USER="$USER"
 export GITHUB_REPOSITORY=zooxco/driving
 
 export dz=develop/zrn

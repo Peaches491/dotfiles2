@@ -159,6 +159,16 @@ nnoremap <C-t>n :tabnext<CR>
 nnoremap <C-t>p :tabprevious<CR>
 nnoremap <C-t>d :tabclose<CR>
 
+" C-n/C-p to switch buffers
+nnoremap <C-p> :bprevious<CR>
+nnoremap <C-n> :bnext<CR>
+
+" Resize splits on window resize.
+augroup AutoResizeSplits
+  autocmd!
+  autocmd VimResized * exe "normal! \<c-w>="
+augroup END
+
 " Window behavior
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -308,7 +318,7 @@ endfunction
 " Run just the Python 'black' validator
 " TODO: Dynamically select between clang, black, buildifier, etc
 nmap <F9> :call ZfixFile('%', '--validator-filter=black')<CR>
-nmap <F10> :call ZfixFile('%', '')<CR
+nmap <F10> :call ZfixFile('%', '')<CR>
 
 " Color theme
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

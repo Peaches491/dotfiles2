@@ -1,6 +1,9 @@
 [alias]
   ap = add --patch
   clone = clone --recursive
+  ci = commit
+  cia = commit --all
+  ciaa = commit --all --amend
   cm = commit
   cmp = compare --url
   co = checkout
@@ -28,6 +31,7 @@
   sl = stash list
   st = status --short --branch --ignore-submodules=dirty
   sw = switch
+  unstage = reset HEAD --
   wip = commit -m wip
 [color]
   ui = true
