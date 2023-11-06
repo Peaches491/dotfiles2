@@ -5,6 +5,7 @@
     src: "{{dotfiles_src_dir}}/shellrc/4-zoox.sh"
     dest: "{{shellrc_config_dir}}/4-work.sh"
     state: link
+    follow: no
     force: yes
 
 - name: Link Zoox Bazel RC file
@@ -12,6 +13,7 @@
     src: "{{dotfiles_src_dir}}/bazel/zoox.bazelrc"
     dest: "~/.work.bazelrc"
     state: link
+    follow: no
     force: yes
 
 - name: Link Zoox Machine-Specific Bazel RC file
@@ -22,6 +24,7 @@
       src: "{{dotfiles_src_dir}}/bazel/zoox.vdi.bazelrc"
       dest: "~/.work-kraken.bazelrc"
       state: link
+      follow: no
       force: yes
     when: ansible_processor_vcpus <= 4
 
@@ -30,6 +33,7 @@
       src: "{{dotfiles_src_dir}}/bazel/zoox.desktop.bazelrc"
       dest: "~/.work-kraken.bazelrc"
       state: link
+      follow: no
       force: yes
     when: ansible_processor_vcpus > 4
 
@@ -38,4 +42,5 @@
     src: "{{dotfiles_src_dir}}/git/zoox.gitconfig"
     dest: "~/.work.gitconfig"
     state: link
+    follow: no
     force: yes
