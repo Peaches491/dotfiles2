@@ -24,6 +24,6 @@ test:nomanual --test_tag_filters=-manual,-flaky,-integration-test
 build:manual --build_tag_filters=+manual,+flaky,+integration-test
 test:manual --test_tag_filters=+manual,+flaky,+integration-test
 
-build --config=clang --config=nostamp --config=nomanual
+build --config=nostamp --config=nomanual --config=iwyu_ci
 
 try-import ~/.work-kraken.bazelrc
