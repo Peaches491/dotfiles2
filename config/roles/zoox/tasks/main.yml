@@ -44,3 +44,9 @@
     state: link
     follow: no
     force: yes
+
+- name: Create to-zweb executable
+  copy:
+    src: to-zweb
+    dest: "{{xdg_bin_home}}/to-zweb"
+    mode: 0755

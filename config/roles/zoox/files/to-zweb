@@ -1,0 +1,23 @@
+#!/bin/bash --norc
+set -euo pipefail
+
+date="$(date "+%Y-%m-%d.%H-%M-%S")"
+name="${1:-unknown}"
+path="temp/$date-$name"
+user=chris
+zweb_url="http://$user.web.zooxlabs.com/$path"
+s3_uri=s3://zoox-web/$user/$path
+temp_file="$(mktemp --suffix "_$name")"
+
+function cleanup {
+  rm -f "$temp_file"
+}
+trap cleanup EXIT
+
+# Copy to a temporary path so awscli can detect the MIME type.
+cat - > "$temp_file"
+
+aws s3 cp "$temp_file" "$s3_uri"
+
+echo Uploaded to $s3_uri
+echo View at $zweb_url
