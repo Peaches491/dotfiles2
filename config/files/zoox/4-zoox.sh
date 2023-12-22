@@ -17,8 +17,9 @@ if [ -f "$(readlink -e "$zooxrc")" ]; then
   source "$zooxrc"
 fi
 
+export VAULT_ADDR='https://vault.zooxlabs.com:8200'
 alias aws-mfa='oathtool --totp --base32 -w 1 "`cat ~/.aws/oathtool-mfa`"'
-alias vault-auth='VAULT_ADDR=https://vault.zooxlabs.com:8200 vault login -method=oidc username=chris'
+alias vault-auth='vault login -method=oidc username=chris'
 
 if which hub >/dev/null; then
   alias git=hub
