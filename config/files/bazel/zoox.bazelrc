@@ -13,8 +13,8 @@ build:nolocal --noremote_local_fallback --local_execution_slots=0
 # Overrride status command to prevent build stamping.
 build:nostamp --workspace_status_command=/bin/true
 
-# Display abundant debug information and run in a sandbox.
-build:debug --subcommands --experimental_ui_max_stdouterr_bytes=-1 --config=sandboxed
+# Display abundant debug information.
+build:actiondebug --subcommands --experimental_ui_max_stdouterr_bytes=-1
 
 # Skip manual tests.
 build:nomanual --build_tag_filters=-manual,-flaky,-integration-test
