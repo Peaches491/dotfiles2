@@ -7,6 +7,7 @@
     mode: 0700
   with_items:
   - "{{zshrc_config_dir}}"
+  - "{{zshrc_completion_dir}}"
   - "{{zshrc_data_dir}}"
 
 - name: Render Zsh Vars template file

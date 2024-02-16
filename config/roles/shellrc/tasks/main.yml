@@ -30,6 +30,7 @@
   - 2-history.sh
   - 2-locale.sh
   - 3-cli-shortcuts.sh
+  - 3-cli-tools.sh
   - 3-default-programs.sh
   - 3-inotify.sh
 

@@ -1,0 +1,30 @@
+---
+
+- name: Download workspace repository
+  file:
+    src: "{{workspace_src}}"
+    dest: "{{workspace_data_dir}}"
+    state: link
+    force: yes
+
+- name: Render workspace Vars template file
+  template:
+    src: vars.sh
+    dest: "{{shellrc_config_dir}}/0-workspace.sh"
+    mode: 0400
+
+- name: Link workspace Zsh RC file
+  file:
+    src: "{{dotfiles_src_dir}}/workspace/{{item}}"
+    dest: "{{zshrc_config_dir}}/{{item}}"
+    state: link
+    force: yes
+  with_items:
+  - 0-workspace-completion.zsh
+
+- name: Link workspace Zsh completion file
+  file:
+    src: "{{dotfiles_src_dir}}/workspace/completion/_workspace"
+    dest: "{{zshrc_completion_dir}}/_workspace"
+    state: link
+    force: yes

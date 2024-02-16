@@ -1,4 +1,5 @@
 ---
 
 zshrc_config_dir: "{{dotfiles_config_dir}}/zshrc"
+zshrc_completion_dir: "{{dotfiles_config_dir}}/zshrc-completion"
 zshrc_data_dir: "{{dotfiles_data_dir}}/zshrc"

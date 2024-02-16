@@ -1,0 +1,4 @@
+---
+
+workspace_src: "{{dotfiles_src_dir}}/workspace"
+workspace_data_dir: "{{github_repos_data_dir}}/workspace"
