@@ -138,12 +138,6 @@ snippet once "header pragma include guard" b
 ${VISUAL}$0
 endsnippet
 
-snippet namespace "opening and closing namespace" b
-namespace $1 {
-${VISUAL}$0
-} // namespace $1
-endsnippet
-
 snippet template "template typename" b
 template <typename $1>
 endsnippet
@@ -260,4 +254,89 @@ $1::$1($3)
   : $2()`!p snip.shift(2)
 
 snip.rv = derived_constructor_initializer_list(t[3], snip)` {}
+endsnippet
+
+snippet namespace "opening and closing namespace" b
+namespace ${1:namespace} {
+${VISUAL}
+} // namespace $1
+endsnippet
+
+
+snippet nested_namespace "Nested opening and closing namespaces" b
+// namespace ${1:namespace}
+`!p
+tokens = t[1].split(' ')
+for tok in tokens:
+  snip.rv += snip.mkline("namespace {} {{\n".format(tok))
+snip.rv += '\n'
+snip.rv += snip.v.text
+for tok in reversed(tokens):
+  snip.rv += snip.mkline("\n}} // namespace {}".format(tok))
+`
+endsnippet
+
+
+snippet zoox_main "Zoox main with GFlags, GLog, and base::init" b
+// `!p snip.rv = snip.basename`
+//
+// TODO
+//
+
+/*
+cc_binary(
+    name = "`!p snip.rv = snip.basename`",
+    srcs = [
+        "`!p snip.rv = snip.fn`",
+    ],
+    deps = [
+        "//base/main:non_interactive_main",
+        "//third_party/gflags",
+        "//third_party/glog",
+    ],
+)
+*/
+
+#include <gflags/gflags.h>
+#include <glog/logging.h>
+
+namespace zoox {
+int `!p
+import inflection
+snip.rv = inflection.camelize(snip.basename, uppercase_first_letter=False)
+`Main() {
+  // Do something...
+  return EXIT_SUCCESS;
+}
+
+int main() {
+return `!p
+import inflection
+snip.rv = inflection.camelize(snip.basename, uppercase_first_letter=False)
+`Main();
+}
+
+} // namespace zoox
+endsnippet
+
+
+snippet zoox_test "Zoox test skeleton with gtest_main" b
+#include <gtest/gtest.h>
+
+/*
+cc_test(
+    name = "`!p snip.rv = snip.basename`",
+    srcs = ["`!p snip.rv = snip.fn`"],
+    deps = [
+        "//base/test/gtest:gtest_main",
+    ],
+)
+*/
+
+TEST(Test`!p
+import inflection
+snip.rv = inflection.camelize(snip.basename, uppercase_first_letter=True)
+`, works) {
+  EXPECT_TRUE(false);
+}
 endsnippet
