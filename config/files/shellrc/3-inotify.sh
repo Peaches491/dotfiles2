@@ -23,3 +23,5 @@ function inotifyrun() {
     _inotifyrun_invoke "$@"
   done
 }
+
+alias inorun=inotifyrun

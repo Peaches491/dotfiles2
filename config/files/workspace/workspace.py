@@ -146,8 +146,8 @@ class CheckoutAction(Action):
                 f"git fetch origin {args.branch};",
                 f"git checkout {args.branch};",
                 f"git branch -u origin/{args.branch};",
-                ");",
-                f"workspace source {args.forest} {args.worktree};",
+                ")",
+                # f"workspace source {args.forest} {args.worktree};",
             ]
         )
 

@@ -3,7 +3,7 @@
 # fpath=("$(workspace_data_dir)/completion" $fpath)
 
 workspace() {
-  eval $($(workspace_data_dir)/workspace.py "$@")
+  eval "$($(workspace_data_dir)/workspace.py $@)"
 }
 
 alias ws=workspace

@@ -30,22 +30,28 @@ let b:auto_format_enabled=0
 let g:formatdef_buildifier='"buildifier -mode=fix -path=".expand("%:p")'
 let g:formatdef_shfmt='"shfmt -s -i ".(&expandtab ? shiftwidth() : "0")'
 
-" Use `,` instead of `\` for the map leader
-let g:mapleader=','
-let g:maplocalleader=','
+" Use ` ` instead of `\` for the map leader
+let g:mapleader=' '
+let g:maplocalleader=' '
+
+" Wait a moment to see if the leader is followed by a mapped hotkey
+set timeoutlen=200 ttimeoutlen=0 updatetime=200
 
 " UltiSnips
 let g:UltiSnipsExpandTrigger='<C-Space>'
 let g:UltiSnipsListSnippets='<C-Tab>'
 let g:UltiSnipsJumpForwardTrigger='<C-j>'
 let g:UltiSnipsJumpBackwardTrigger='<C-k>'
+" let g:UltiSnipsSnippetDirectories=["", "UltiSnips"]
+" let g:UltiSnipsSnippetDirectories = ["~/.config/dotfiles/vim/UltiSnips"]
+let g:UltiSnipsSnippetDirectories=["UltiSnips"]
 
 augroup FileTypeVariables
   autocmd!
 
   " Enable auto-formatting for certain filetypes
   " autocmd FileType bzl,c,cpp,protobuf let b:auto_format_enabled=1
-  autocmd FileType bzl let b:auto_format_enabled=1
+  autocmd FileType bzl let b:auto_format_enabled=0
 
   " Disable auto-indenting for filetypes without good indent files
   autocmd FileType vim,tex let b:autoformat_autoindent=0
@@ -58,13 +64,16 @@ augroup END
 call plug#begin('~/.vim/plugged')
 
 " Visual miscellanea
-Plug 'altercation/vim-colors-solarized' " Solarized color theme for vim
+" Plug 'altercation/vim-colors-solarized' " Solarized color theme for vim
+Plug 'overcache/NeoSolarized' " Truecolor Solarized color theme for neovim, specifically
 Plug 'airblade/vim-gitgutter' " Git diff markings in the buffer gutter
 Plug 'wesQ3/vim-windowswap' " Window swapping keybindings
+Plug 'lukas-reineke/indent-blankline.nvim' " Highlight different indent levels
+" Requires Lua config: require("ibl").setup()
 
 " Editing miscellanea
 Plug 'PeterRincker/vim-argumentative' " Rearrange function arguments
-" Plug 'SirVer/ultisnips' " Code snippet completion
+Plug 'SirVer/ultisnips' " Code snippet completion
 Plug 'tpope/vim-abolish' " Assorted word-munging utilities (Abolish, Subvert, Coerce)
 Plug 'tpope/vim-apathy' " Filetype-aware values for path, suffixesadd, include, includeexpr, and define
 Plug 'tpope/vim-characterize' " Additional character information visible with `ga`
@@ -112,6 +121,16 @@ Plug 'tpope/vim-rhubarb' " Support for Github Enterprise URLs
 let g:github_enterprise_urls = ['https://git.zooxlabs.com']
 
 Plug 'google/vim-jsonnet' " Syntax highlighting for Jsonnet files
+
+if has('nvim')
+    Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+else
+  Plug 'Shougo/deoplete.nvim'
+  Plug 'roxma/nvim-yarp'
+  Plug 'roxma/vim-hug-neovim-rpc'
+endif
+let g:deoplete#enable_at_startup = 1
+
 
 call plug#end()
 
@@ -163,11 +182,67 @@ nnoremap <C-t>d :tabclose<CR>
 nnoremap <C-p> :bprevious<CR>
 nnoremap <C-n> :bnext<CR>
 
+" Close the open buffer, but keep the split
+nnoremap <leader>bd :bprevious\|bdelete #<CR>
+
 " Resize splits on window resize.
 augroup AutoResizeSplits
   autocmd!
   autocmd VimResized * exe "normal! \<c-w>="
 augroup END
+
+" Find the corresponding Bazel BUILD file for the selected buffer
+function! GoToBuild()
+python3 << EOF
+import vim
+import os.path
+
+try:
+  fn = vim.current.buffer.name
+  tokens = fn.split('/')
+  basename = tokens[-1]
+  buildfile = None
+  for i in range(len(tokens)-1, 0, -1):
+    buildfile = '/'.join(tokens[:i]) + '/BUILD'
+    if os.path.isfile(buildfile):
+      break
+  if buildfile:
+    print("found!!!",buildfile)
+    vim.command('split ' + buildfile)
+    vim.command('set hidden')
+    vim.command('call search("\\"' + basename + '\\"")')
+except Exception as e:
+   print("Something went wrong: " + str(e))
+EOF
+endfunction
+
+nnoremap <Leader>gb :call GoToBuild()<CR>
+
+" Find the corresponding test file for the selected buffer
+function! GoToTest()
+python3 << EOF
+import vim
+import os.path
+
+try:
+  fn = vim.current.buffer.name
+  tokens = fn.split('/')
+  basename = tokens[-1]
+  name, ext = basename.rsplit('.', 1)
+  testfile = '/'.join(tokens[:-1] + [name + '_test.' + ext])
+  if os.path.isfile(testfile):
+    print("found!!!",testfile)
+    vim.command('vsplit ' + testfile)
+    vim.command('set hidden')
+    vim.command('call search("\\"' + basename + '\\"")')
+  else:
+    print("Test file not found: " + testfile)
+except Exception as e:
+   print("Something went wrong: " + str(e))
+EOF
+endfunction
+
+nnoremap <Leader>gt :call GoToTest()<CR>
 
 " Window behavior
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -268,6 +343,18 @@ set hlsearch              " Highlight matches for previous search
 set ignorecase smartcase  " Searches are case-insensitive unless upper case characters are used
 set wrapscan              " Searches wrap around the end of the file
 
+" Search for selected text, forwards or backwards.
+vnoremap <silent> * :<C-U>
+  \let old_reg=getreg('"')<Bar>let old_regtype=getregtype('"')<CR>
+  \gvy/<C-R><C-R>=substitute(
+  \escape(@", '/\.*$^~['), '\_s\+', '\\_s\\+', 'g')<CR><CR>
+  \gV:call setreg('"', old_reg, old_regtype)<CR>
+vnoremap <silent> # :<C-U>
+  \let old_reg=getreg('"')<Bar>let old_regtype=getregtype('"')<CR>
+  \gvy?<C-R><C-R>=substitute(
+  \escape(@", '?\.*$^~['), '\_s\+', '\\_s\\+', 'g')<CR><CR>
+  \gV:call setreg('"', old_reg, old_regtype)<CR>
+
 " Filesystem search
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -311,8 +398,10 @@ nnoremap <Leader>F :call AutoFormatToggle()<CR>
 " Zoox Zfix formatting
 function ZfixFile(filename, zfix_args)
   execute "w"
+  setlocal autoread
   execute "!".$ZOOX_WORKSPACE_ROOT."/ci/file_validators/validate ".a:zfix_args." --fix ".a:filename
   execute "e"
+  setlocal noautoread
 endfunction
 
 " Run just the Python 'black' validator
@@ -323,10 +412,12 @@ nmap <F10> :call ZfixFile('%', '')<CR>
 " Color theme
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+set termguicolors
 set background=light
 set t_Co=256                  " Use as many colors as your terminal supports
 set term=screen-256color      " Use 256-color screen emulation
-silent! colorscheme solarized " Must be silent so Plug does not fail when installing for the first time
+" silent! colorscheme solarized " Must be silent so Plug does not fail when installing for the first time
+silent! colorscheme NeoSolarized " Must be silent so Plug does not fail when installing for the first time
 
 " Better handling of GitGutter background color
 let g:gitgutter_set_sign_backgrounds = 0
@@ -340,7 +431,11 @@ augroup FileTypeSettings
   autocmd!
 
   " Comment strings differ from `#` in these languages
-  autocmd FileType c,cpp,proto setlocal commentstring=//\ %s
+  " Highlight column 80
+  autocmd FileType c,cpp,proto
+    \ setlocal commentstring=//\ %s |
+    \ setlocal colorcolumn=80
+
   autocmd FileType vim setlocal commentstring=\"\ %s
 
   " Enable spell-check in prose

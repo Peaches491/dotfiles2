@@ -2,4 +2,4 @@ workforest:
  - name: "driving"
    root: "/home/daniel/driving/"
    root_checkout: "master"
-   source: "scripts/shell/zooxrc.sh"
+   source: "devx/shells/activate"
