@@ -44,6 +44,7 @@ end
 vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
     "PeterRincker/vim-argumentative",   -- Rearrange function arguments
+    "SirVer/ultisnips",                 -- Code snippet completion
     "folke/which-key.nvim",             -- Display a popup with keybindings for ex commands
     "lewis6991/gitsigns.nvim",          -- Git buffer decorations
     "maxmx03/solarized.nvim",           -- Solarized color theme for nvim
@@ -59,6 +60,7 @@ require("lazy").setup({
     "tpope/vim-surround",               -- Mappings to change surrounding elements (brackets, quotes, tags, etc)
     "tpope/vim-sleuth",                 -- Detect tabstop and shiftwidth automatically
     "tpope/vim-speeddating",            -- {In,De}crement (<C-A>, <C-X>) works with datetimes
+    "tpope/vim-tbone",                  -- Utilities to copy/past from TMux buffers (:Tyank, :Tput)
     "tpope/vim-vinegar",                -- Improve usability of netrw directory browser
     "wesQ3/vim-windowswap",             -- Window swapping keybindings
 
