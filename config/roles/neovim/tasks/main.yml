@@ -43,6 +43,16 @@
   with_items:
   - init.lua
 
+- name: Link UltiSnips snippet files
+  file:
+    src: "{{dotfiles_src_dir}}/vim/{{item}}"
+    dest: "{{neovim_config_dir}}/{{item}}"
+    state: link
+    follow: no
+    force: yes
+  with_items:
+  - UltiSnips
+
 - name: Link Neovim config directory
   file:
     src: "{{neovim_config_dir}}"

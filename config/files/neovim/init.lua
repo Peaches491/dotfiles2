@@ -27,6 +27,11 @@ end
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
+-- Python configuration
+--------------------------------------------------------------------------------
+-- Use Python 3.11 for neovim
+vim.g.python3_host_prog = "/usr/bin/python3.11"
+
 -- Plugin configuration
 --------------------------------------------------------------------------------
 
@@ -44,16 +49,15 @@ end
 vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
     "PeterRincker/vim-argumentative",   -- Rearrange function arguments
-    "SirVer/ultisnips",                 -- Code snippet completion
     "folke/which-key.nvim",             -- Display a popup with keybindings for ex commands
     "lewis6991/gitsigns.nvim",          -- Git buffer decorations
-    "maxmx03/solarized.nvim",           -- Solarized color theme for nvim
     "michaeljsmith/vim-indent-object",  -- Treat indent structures as text objects
     "norcalli/nvim-colorizer.lua",      -- Color highlighter
+    "tomtom/tcomment_vim",                  -- Easy (un)commenting of code blocks
     "tpope/vim-abolish",                -- Assorted word-munging utilities (Abolish, Subvert, Coerce)
     "tpope/vim-apathy",                 -- Filetype-aware values for path, suffixesadd, include, includeexpr, and define
     "tpope/vim-characterize",           -- Additional character information visible with `ga`
-    "tpope/vim-commentary",             -- Easy (un)commenting of code blocks
+    -- "tpope/vim-commentary",             -- Easy (un)commenting of code blocks
     "tpope/vim-fugitive",               -- Integrated git commands
     "tpope/vim-repeat",                 -- Better command classification for `.`
     "tpope/vim-sensible",               -- Good defaults for everyone
@@ -65,8 +69,23 @@ require("lazy").setup({
     "wesQ3/vim-windowswap",             -- Window swapping keybindings
 
     {
+        "maxmx03/solarized.nvim",           -- Solarized color theme for nvim
+        lazy = false,
+        ---@type solarized.config
+        opts = {},
+        config = function(_, opts)
+          vim.o.termguicolors = true
+          vim.o.background = 'light'
+          require('solarized').setup(opts)
+          vim.cmd.colorscheme 'solarized'
+        end,
+    },
+    {
         "lukas-reineke/indent-blankline.nvim",  -- Add indent guides
         main = "ibl",
+        ---@module "ibl"
+        ---@type ibl.config
+        opts = {},
     },
 
     {
@@ -88,6 +107,7 @@ require("lazy").setup({
             "hrsh7th/cmp-nvim-lsp", -- nvim-cmp source for neovim builtin LSP client
             "hrsh7th/cmp-nvim-lua", -- nvim-cmp source for neovim Lua API
             "hrsh7th/cmp-path",     -- nvim-cmp source for filesystem paths
+            "quangnguyen30192/cmp-nvim-ultisnips", -- nvm-cmp source for UltiSnips
 
             -- Snippet Engine & its associated nvim-cmp source
             {
@@ -127,8 +147,52 @@ require("lazy").setup({
         init = function ()
             vim.g.github_enterprise_urls = {"https://git.zooxlabs.com"}
         end,
-    }
+    },
+
+    {
+        "nacitar/a.vim",                    -- Switch between header and source (e.g. with :A)
+        init = function ()
+            -- Override Cpp extensions to make "c" source files lower priority
+            vim.g.alternateExtensions_h = "cpp,cxx,cc,CC,c"
+        end,
+    },
+
+    {
+        "SirVer/ultisnips",                 -- Code snippet completion
+        init = function ()
+            vim.g.UltiSnipsSnippetDirectories = {"UltiSnips",}
+        end,
+        dependencies = {
+            "quangnguyen30192/cmp-nvim-ultisnips",     -- nvim-cmp source for UltiSnips
+        },
+    },
 })
+
+
+-- Key bindings
+--------------------------------------------------------------------------------
+-- Bind zfix to F9, preserving cursor position
+vim.keymap.set('n', '<F9>', function()
+    local pos = vim.api.nvim_win_get_cursor(0) -- Save cursor position
+    vim.cmd("write")
+    vim.cmd("!zfix " .. vim.fn.expand("%"))
+    vim.cmd("edit")
+    vim.api.nvim_win_set_cursor(0, pos) -- Restore cursor position
+end, { noremap = true })
+
+
+-- Commentary
+--------------------------------------------------------------------------------
+-- vim.keymap.set("n", "<leader>ci", "gcc", { noremap = false, desc = "Toggle Comment (Line)" }) -- Comment line
+-- vim.keymap.set("v", "<leader>ci", "gc", { noremap = false, desc = "Toggle Comment (Selection)" }) -- Comment selection
+
+
+-- tcomment
+--------------------------------------------------------------------------------
+vim.keymap.set("n", "<leader>ci", ":TComment<CR>", { silent = true, desc = "Toggle Comment (Line)" })
+vim.keymap.set("v", "<leader>ci", ":TCommentBlock<CR>", { silent = true, desc = "Toggle Comment (Selection)" })
+
+
 
 -- GitSigns
 --------------------------------------------------------------------------------
@@ -258,7 +322,7 @@ require("nvim-treesitter.configs").setup({
     },
 
     -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
-    auto_install = false,
+    auto_install = true,
 
     highlight = { enable = true },
     incremental_selection = {
@@ -271,8 +335,7 @@ require("nvim-treesitter.configs").setup({
         },
     },
     indent = { enable = true },
-    textobjects = {
-        select = {
+    textobjects = { select = {
             enable = true,
             lookahead = true,   -- Automatically jump forward to textobj, similar to targets.vim
             keymaps = {
@@ -391,8 +454,10 @@ local language_servers = {
     omnisharp = {},
     -- Perl
     perlnavigator = {},
+    -- Protobufs
+    -- protols = {},
     -- Python
-    pyright = {},
+    pyright = {pythonVersion = '3.11'},
     -- Rust
     rust_analyzer = {},
     -- Ruby
@@ -426,6 +491,15 @@ local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
 
 local lspconfig = require("lspconfig")
+lspconfig.protols.setup({
+    filetypes = { "proto" },
+    settings = {
+        protols = {
+            format = true, -- Enable formatting
+        },
+    },
+})
+
 local mason_lspconfig = require("mason-lspconfig")
 
 mason_lspconfig.setup({
@@ -524,6 +598,18 @@ vim.keymap.set("n", "<C-t>d", ":tabclose<CR>", { noremap = true })
 vim.keymap.set("n", "<C-p>", ":bprevious<CR>", { noremap = true })
 vim.keymap.set("n", "<C-n>", ":bnext<CR>", { noremap = true })
 
+-- <leader>bd to Close the open buffer, but leave the split
+vim.keymap.set("n", "<leader>bd", ":bprevious|bdelete #<CR>", { noremap = true })
+
+local resize_group = vim.api.nvim_create_augroup("AutoResizeSplits", {})
+vim.api.nvim_create_autocmd({ "VimResized" }, {
+    group = resize_group,
+    pattern = "*",
+    command = "wincmd =",
+    desc = "Resize splits automatically on window resize",
+})
+
+
 -- Text rendering
 --------------------------------------------------------------------------------
 
@@ -584,16 +670,10 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 
 vim.opt.termguicolors = true
 
-local solarized = require("solarized")
-solarized.setup()
-
-vim.cmd.colorscheme("solarized")
-vim.opt.background = "light"
-
+--[[
 local solarized_utils = require("solarized.utils")
-local solarized_palette = require("solarized.palette")
 local ibl_highlight_groups = function()
-    local c = solarized_palette.get_colors()
+    local c = solarized_utils.get_colors()
     -- base0:  Normal.fg
     -- base01: Comment.fg
     -- base03: Normal.bg
@@ -611,9 +691,9 @@ local ibl_hooks = require("ibl.hooks")
 ibl_hooks.register(
     ibl_hooks.type.HIGHLIGHT_SETUP,
     function()
-        local set_hl = solarized_utils.set_hl
+        local set_hl = vim.api.nvim_set_hl
         for name, definition in pairs(ibl_highlight_groups()) do
-            set_hl(name, definition)
+            set_hl(0, name, definition)
         end
     end
 )
@@ -631,6 +711,19 @@ ibl_hooks.register(
     ibl_hooks.builtin.scope_highlight_from_extmark
 )
 
+local highlight = {
+    "CursorColumn",
+    "Whitespace",
+}
+require("ibl").setup {
+    indent = { highlight = highlight, char = "" },
+    whitespace = {
+        highlight = highlight,
+        remove_blankline_trail = false,
+    },
+    scope = { enabled = false },
+}
+
 -- Toggle IBL when entering/exiting visual mode.
 local visual_ibl_group = vim.api.nvim_create_augroup("visual_ibl_group", {})
 vim.api.nvim_create_autocmd("ModeChanged", {
@@ -645,6 +738,7 @@ vim.api.nvim_create_autocmd("ModeChanged", {
     command = "IBLDisable",
     desc = "Disable indent-blanklines when entering visual mode",
 })
+]]--
 
 require("colorizer").setup()
 
@@ -712,7 +806,8 @@ end
 cmp.setup({
     snippet = {
         expand = function(args)
-            luasnip.lsp_expand(args.body)
+            -- luasnip.lsp_expand(args.body)
+            vim.fn["UltiSnips#Anon"](args.body)
         end
     },
     completion = {
@@ -733,7 +828,8 @@ cmp.setup({
     }),
     sources = cmp.config.sources({
         { name = "nvim_lsp" },
-        { name = "luasnip" },
+        -- { name = "luasnip" },
+        { name = "ultisnips" },
     }, {
         {
             name = "buffer",
@@ -761,10 +857,6 @@ cmp.setup.cmdline(":", {
     sources = cmp.config.sources({
         {
             name = "path",
-            option = {
-                trailing_slash = true,
-                label_trailing_slash = true,
-            },
         },
     }, {
         { name = "cmdline" },
