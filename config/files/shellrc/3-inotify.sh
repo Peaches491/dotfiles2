@@ -10,7 +10,7 @@ function inotifyrun() {
 
   while inotifywait \
       --recursive \
-      --exclude ".*/\.git/.*|.*/\.mypy_cache/.*|.*/bazel-.*/.*|(.*\.sw.?$)" \
+      --exclude ".*/\.git/.*|.*/\.cache/.*|.*/\.mypy_cache/.*|.*/bazel-.*/.*|(.*\.sw.?$)" \
       --event modify \
       --event move \
       --event create \

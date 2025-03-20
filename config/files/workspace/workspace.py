@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.6
+#!/usr/bin/env python3
 
 from __future__ import print_function
 
@@ -8,6 +8,7 @@ import functools
 import logging
 import os
 from pathlib import Path
+import re
 import subprocess
 import sys
 import yaml
@@ -122,7 +123,6 @@ class CheckoutAction(Action):
         subparser.add_argument("worktree", default=None, nargs="?")
 
     def autocomplete(self, argv):
-        forests = load_forests()
         forest_names = [f.name for f in load_forests()]
         if not argv or (len(argv) == 1 and argv[0] not in forest_names):
             return forest_names
@@ -163,7 +163,6 @@ class CreateAction(Action):
         subparser.add_argument("worktree", default=None, nargs="?")
 
     def autocomplete(self, argv):
-        forests = load_forests()
         forest_names = [f.name for f in load_forests()]
         if not argv or (len(argv) == 1 and argv[0] not in forest_names):
             return forest_names
@@ -204,7 +203,6 @@ class SourceAction(Action):
         subparser.add_argument("tree", nargs="?")
 
     def autocomplete(self, argv):
-        forests = load_forests()
         forest_names = [f.name for f in load_forests()]
         if not argv or (len(argv) == 1 and (argv[0] not in forest_names)):
             return forest_names
@@ -275,7 +273,6 @@ class ChdirAction(Action):
         subparser.add_argument("tree")
 
     def autocomplete(self, argv):
-        forests = load_forests()
         forest_names = [f.name for f in load_forests()]
         if not argv or (len(argv) == 1 and (argv[0] not in forest_names)):
             return forest_names
@@ -286,6 +283,36 @@ class ChdirAction(Action):
         forest = load_forest(args.forest)
         tree = forest.worktree(args.tree)
         return f"builtin cd {tree.root()};"
+
+
+class ListAction(Action):
+    __action_name__ = "list"
+    __action_description__ = "list all available workspaces"
+
+    def parse_args(self, subparser):
+        subparser.add_argument("forest")
+        subparser.add_argument("query", nargs="?", default="")
+        subparser.add_argument("--paths", action="store_true")
+
+    def autocomplete(self, argv):
+        forest_names = [f.name for f in load_forests()]
+        if not argv or (len(argv) == 1 and (argv[0] not in forest_names)):
+            return forest_names
+        else:
+            return load_forest(argv[0]).worktree_names()
+
+    def do(self, args):
+        forest = load_forest(args.forest)
+        pattern = re.compile(args.query)
+        matches = [
+            n for n in forest.worktree_names()
+            if n.startswith(args.query) or pattern.match(n)
+        ]
+        if args.paths:
+            matches_str = '\n'.join([forest.worktree(m).root() for m in matches])
+        else:
+            matches_str = '\n'.join(matches)
+        return f"echo '{matches_str}'"
 
 
 class WorkTree(object):
@@ -364,7 +391,6 @@ def autocomplete_options(args):
     log.debug(f"stripped: {comp}")
 
     options = []
-    delim = " "
     if not comp or comp[0] not in Action.action_names():
         log.debug(f"stripped: {comp}")
         options = Action.action_suggestions(args.mode)

@@ -11,7 +11,8 @@ WORKTREE_ENVIRONMENT_ENTRYPOINT+=' && tmux attach -t "$project_name"'
 WORKTREE_ENVIRONMENT_ENTRYPOINT+=' || tmux new -s "$project_name"'
 export WORKTREE_ENVIRONMENT_ENTRYPOINT
 
-export PATH+=":/opt/zoox/bin"
+PATH+=":/opt/zoox/bin"
+export PATH
 
 export VLR_ROOT="$HOME"
 zooxrc="$(worktree_active_project_worktree)/scripts/shell/zooxrc.sh"
@@ -19,9 +20,11 @@ if [ -f "$(readlink -e "$zooxrc")" ]; then
   source "$zooxrc"
 fi
 
-export VAULT_ADDR='https://vault.zooxlabs.com:8200'
+export VAULT_ADDR='https://zvault.zooxlabs.com:8200'
 alias aws-mfa='oathtool --totp --base32 -w 1 "`cat ~/.aws/oathtool-mfa`"'
-alias vault-auth="VAULT_ADDR=https://vault.zooxlabs.com:8200 vault login -method=oidc username=$USER"
+alias vault-auth="export VAULT_ADDR=https://vault.zooxlabs.com:8200 && vault login -method=oidc username=$USER"
+alias zvault-auth="export VAULT_ADDR=https://zvault.zooxlabs.com:8200 && vault login -method=oidc username=$USER"
+alias aws-auth="zaccess -authurl aws -path aws-zooxlabs-roles -get Clams"
 
 if which hub >/dev/null; then
   alias git=hub
