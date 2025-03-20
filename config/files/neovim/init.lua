@@ -868,25 +868,126 @@ local which_key = require("which-key")
 which_key.setup()
 
 -- document existing key chains
-which_key.register({
-    ["<leader>c"] = { name = "[C]ode", _ = "which_key_ignore" },
-    ["<leader>d"] = { name = "[D]ocument", _ = "which_key_ignore" },
-    ["<leader>g"] = { name = "[G]it", _ = "which_key_ignore" },
-    ["<leader>h"] = { name = "Git [H]unk", _ = "which_key_ignore" },
-    ["<leader>r"] = { name = "[R]ename", _ = "which_key_ignore" },
-    ["<leader>s"] = { name = "[S]earch", _ = "which_key_ignore" },
-    ["<leader>t"] = { name = "[T]oggle", _ = "which_key_ignore" },
-    ["<leader>w"] = { name = "[W]orkspace", _ = "which_key_ignore" },
+which_key.add({
+    { "<leader>c", group = "[C]ode" },
+    { "<leader>c_", hidden = true },
+    { "<leader>d", group = "[D]ocument" },
+    { "<leader>d_", hidden = true },
+    { "<leader>g", group = "[G]it" },
+    { "<leader>g_", hidden = true },
+    { "<leader>h", group = "Git [H]unk" },
+    { "<leader>h_", hidden = true },
+    { "<leader>r", group = "[R]ename" },
+    { "<leader>r_", hidden = true },
+    { "<leader>s", group = "[S]earch" },
+    { "<leader>s_", hidden = true },
+    { "<leader>t", group = "[T]oggle" },
+    { "<leader>t_", hidden = true },
+    { "<leader>w", group = "[W]orkspace" },
+    { "<leader>w_", hidden = true },
 })
+
 -- register which-key VISUAL mode
 -- required for visual <leader>hs (hunk stage) to work
-which_key.register(
-    {
-        ["<leader>"] = { name = "VISUAL <leader>" },
-        ["<leader>h"] = { "Git [H]unk" },
-    },
-    { mode = "v" }
+which_key.add({
+  { "<leader>", group = "VISUAL <leader>", mode = "v" },
+  { "<leader>h", desc = "Git [H]unk", mode = "v" },
+})
+
+-- GoToBuild
+--
+-- try:
+--   fn = vim.current.buffer.name
+--   tokens = fn.split("/")
+--   basename = tokens[-1]
+--   buildfile = None
+--   for i in range(len(tokens)-1, 0, -1):
+--     buildfile = "/".join(tokens[:i]) + "/BUILD"
+--     if os.path.isfile(buildfile):
+--       break
+--   if buildfile:
+--     print("found!!!", buildfile)
+--     vim.command("split " + buildfile)
+--     vim.command("set hidden")
+--     vim.command(\'call search("\" + basename + "\")\')
+-- except Exception as e:
+--    print("Something went wrong: " + str(e))
+vim.api.nvim_create_user_command(
+    "GoToBuild",
+    function()
+        local path = vim.api.nvim_buf_get_name(0)
+        local basename = string.gsub(path, "(.*/)(.*)", "%2")
+        local base = ""
+        local tokens = {}
+        local num_tokens = 0
+        for tok in string.gmatch(path, '([^/]+)') do
+            base = base .. "/" .. tok
+            tokens[#tokens + 1] = base
+            num_tokens = num_tokens + 1
+        end
+        -- Start from idx 1 to omit open file
+        for idx = 1, num_tokens-1 do
+            local file = tokens[num_tokens - idx] .. "/BUILD"
+            if vim.fn.filereadable(file) == 1 then
+                vim.cmd('split ' .. file)
+                vim.cmd('set hidden')
+                vim.cmd('call search("' .. basename  .. '")')
+                return
+            end
+        end
+    end,
+    { desc = "Navigate to the Bazel BUILD file for this target" }
 )
+
+vim.keymap.set("n", "<leader>gb", "<cmd>GoToBuild<CR>", { noremap = true, silent = true })
+
+-- GoToTest
+--
+-- try:
+--   fn = vim.current.buffer.name
+--   tokens = fn.split("/")
+--   basename = tokens[-1]
+--   buildfile = None
+--   for i in range(len(tokens)-1, 0, -1):
+--     buildfile = "/".join(tokens[:i]) + "/BUILD"
+--     if os.path.isfile(buildfile):
+--       break
+--   if buildfile:
+--     print("found!!!", buildfile)
+--     vim.command("split " + buildfile)
+--     vim.command("set hidden")
+--     vim.command(\'call search("\" + basename + "\")\')
+-- except Exception as e:
+--    print("Something went wrong: " + str(e))
+vim.api.nvim_create_user_command(
+    "GoToTest",
+    function()
+        local path = vim.api.nvim_buf_get_name(0)
+        local basename = string.gsub(path, "(.*/)(.*)", "%2")
+        local extension = string.gsub(path, "(.*/)(.*)\\.(.*)", "%3")
+        local base = ""
+        local tokens = {}
+        local num_tokens = 0
+        for tok in string.gmatch(path, '([^/]+)') do
+            base = base .. "/" .. tok
+            tokens[#tokens + 1] = base
+            num_tokens = num_tokens + 1
+        end
+        -- Start from idx 1 to omit open file
+        for idx = 1, num_tokens-1 do
+            local file = tokens[num_tokens - idx] .. "/" .. basename .. "_test." .. extension
+            if vim.fn.filereadable(file) == 1 then
+                vim.cmd('split ' .. file)
+                vim.cmd('set hidden')
+                vim.cmd('call search("' .. basename  .. '")')
+                return
+            end
+        end
+    end,
+    { desc = "Navigate to the unit test file for this target" }
+)
+
+vim.keymap.set("n", "<leader>gt", "<cmd>GoToTest<CR>", { noremap = true, silent = true })
 
 -- Input behavior
 --------------------------------------------------------------------------------
