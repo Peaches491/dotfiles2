@@ -7,3 +7,6 @@ function tmux_data_dir() {
 function tmux_tpm_data_dir() {
   echo {{tmux_tpm_data_dir}}
 }
+function tmux_plugins_data_dir() {
+  echo {{tmux_plugins_data_dir}}
+}
