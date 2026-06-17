@@ -2,8 +2,12 @@
 
 dependencies:
 - apt
-- albert
-- chrome-browser
+- role: albert
+  tags: [gui]
+- role: chrome-browser
+  tags: [gui]
 - docker
-- spotify-client
-- virtualbox
+- role: spotify-client
+  tags: [gui]
+- role: virtualbox
+  tags: [gui]

@@ -3,11 +3,17 @@
 - name: Install user tool apt packages
   apt:
     pkg:
-    - gnome-tweak-tool
-    - i3
-    - firefox
     - stow
     - tree
     - w3m
+  become: yes
+
+- name: Install user tool GUI apt packages
+  apt:
+    pkg:
+    - gnome-tweak-tool
+    - i3
+    - firefox
     - xclip
   become: yes
+  tags: [gui]

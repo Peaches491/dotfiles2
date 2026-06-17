@@ -1,7 +1,8 @@
 ---
 
 dependencies:
-- alacritty
+- role: alacritty
+  tags: [gui]
 - apt
 - git
 - go

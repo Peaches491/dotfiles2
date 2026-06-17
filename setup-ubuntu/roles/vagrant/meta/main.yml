@@ -5,4 +5,5 @@ dependencies:
 - libvirt
 - lxc
 - qemu
-- virtualbox
+- role: virtualbox
+  tags: [gui]
