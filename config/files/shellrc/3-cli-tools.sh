@@ -1,4 +1,5 @@
 #!/bin/sh
+
 function git_dump_all_versions() {
   if [ "$#" -ne 1 ] || [ "$1" == "help" ]
   then
@@ -34,3 +35,44 @@ function git_dump_all_versions() {
     let index++
   done
 }
+
+function list_worktrees() {
+  local tmpfile
+  tmpfile=$(mktemp)
+
+  # Gather worktree info
+  git worktree list --porcelain | awk '
+    /^worktree / {_path=$2}
+    /^HEAD / {_head=$2; print _path "|" _head}
+  ' | while IFS='|' read -r _path _head; do
+    commit_date=$(git -C "$_path" show -s --format='%ci' "$_head")
+    echo "$_path|$_head|$commit_date" >> "$tmpfile"
+  done
+
+  # Output header
+  printf "%-40s %-12s %-25s\n" "Path" "Commit" "Date"
+  printf "%-40s %-12s %-25s\n" "----" "------" "----"
+
+  # Sort and print
+  {
+    echo -e "Path\tCommit\tDate"
+    sort -t$'|' -k3 "$tmpfile"
+  } | column -t -s $'|'
+
+  rm "$tmpfile"
+}
+
+function git_dir_view() {
+  files="$(git ls-tree --name-only HEAD -- $GIT_PREFIX)"
+
+  lines=""
+  while IFS= read -r f; do
+      str="$(git log -1 --pretty=tformat:"%C(green)%cr%Creset  %x09  %C(cyan)%h%Creset  %s  %C(yellow)(%cn)%Creset" $f)"
+      printf -v str "%s  --  %s\n" "$f" "$str"
+      lines+="$(echo "$str" | sed 's#[\t ]\{2,\}#\t#g')"
+      lines+=$'\n'
+  done < <(printf '%s' "$files")
+
+  echo "$lines" | column -ts $'\t'
+}
+

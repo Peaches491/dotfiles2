@@ -136,20 +136,18 @@ class CheckoutAction(Action):
 
         forest = load_forest(args.forest)
         new_tree = forest.add_worktree(args.worktree)
-        return "\n".join(
-            [
-                "(set -euxo pipefail;",
-                f"cd {forest.root_checkout_dir()};",
-                f"echo 'Creating new worktree: {args.worktree} by checking out: {args.branch}';",
-                f"git worktree add --detach {new_tree.root()};",
-                f"cd {new_tree.root()};",
-                f"git fetch origin {args.branch};",
-                f"git checkout {args.branch};",
-                f"git branch -u origin/{args.branch};",
-                ")",
-                # f"workspace source {args.forest} {args.worktree};",
-            ]
-        )
+        return f"""(
+    set -euxo pipefail;
+    cd {forest.root_checkout_dir()};
+    echo 'Creating new worktree: {args.worktree} by checking out: {args.branch}';
+    git worktree add --detach {new_tree.root()};
+    cd {new_tree.root()};
+    git fetch origin {args.branch};
+    git checkout {args.branch};
+    git branch --set-upstream-to origin/master;
+)
+workspace source {args.forest} {args.worktree};
+"""
 
 
 class CreateAction(Action):
@@ -179,19 +177,21 @@ class CreateAction(Action):
         forest = load_forest(args.forest)
         source_tree = forest.worktree(args.source_worktree)
         new_tree = forest.add_worktree(args.worktree)
-        return "\n".join(
-            [
-                "(set -euxo pipefail;",
-                f"cd {source_tree.root()};",
-                f"echo 'Creating new worktree: {args.worktree} from existing: {source_tree.name}';",
-                f"git worktree add --detach {new_tree.root()};",
-                f"cd {new_tree.root()};",
-                f"git checkout -B {args.branch};",
-                f"git branch -u origin/{args.branch};",
-                ")",
-                f"workspace source {args.forest} {args.worktree};",
-            ]
-        )
+        return f"""(
+    set -euxo pipefail;
+    cd {source_tree.root()};
+    echo "Creating new worktree: {args.worktree} from existing: {source_tree.name}";
+    git worktree add --detach {new_tree.root()};
+    cd {new_tree.root()};
+    git checkout -B {args.branch} --track origin/master;
+    if [ -f {source_tree.root()}/compile_commands.json ]; then
+      cp {source_tree.root()}/compile_commands.json {new_tree.root()};
+    else
+      echo "No compile_commands.json found in source worktree"
+    fi
+)
+workspace source {args.forest} {args.worktree};
+"""
 
 
 class SourceAction(Action):

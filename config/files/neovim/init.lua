@@ -166,6 +166,16 @@ require("lazy").setup({
             "quangnguyen30192/cmp-nvim-ultisnips",     -- nvim-cmp source for UltiSnips
         },
     },
+
+    {
+        "coder/claudecode.nvim",            -- Claude Code IDE integration via MCP over WebSocket
+        config = true,
+        keys = {
+            { "<leader>a",  nil,                                          desc = "AI (Claude)" },
+            { "<leader>ac", "<cmd>ClaudeCode<cr>",                        desc = "Toggle Claude Code" },
+            { "<leader>as", "<cmd>ClaudeCode send<cr>", mode = "v",       desc = "Send selection to Claude" },
+        },
+    },
 })
 
 
@@ -457,7 +467,7 @@ local language_servers = {
     -- Protobufs
     -- protols = {},
     -- Python
-    pyright = {pythonVersion = '3.11'},
+    pyright = { python = { pythonPath = "/usr/bin/python3.11", analysis = { pythonVersion = "3.11" } } },
     -- Rust
     rust_analyzer = {},
     -- Ruby
@@ -581,11 +591,15 @@ vim.opt.sidescrolloff = 5   -- Keep columns of context visible when scrolling ho
 vim.opt.splitright = true   -- Open vertical window splits starboard
 vim.opt.splitbelow = true   -- Open horizontal window splits aft
 
--- Use C-hjkl to change splits
+-- Use C-hjkl to change splits (normal and terminal mode)
 vim.keymap.set("n", "<C-h>", "<C-w><Left>", { noremap = true })
 vim.keymap.set("n", "<C-j>", "<C-w><Down>", { noremap = true })
 vim.keymap.set("n", "<C-k>", "<C-w><Up>", { noremap = true })
 vim.keymap.set("n", "<C-l>", "<C-w><Right>", { noremap = true })
+vim.keymap.set("t", "<C-h>", "<C-\\><C-n><C-w><Left>", { noremap = true })
+vim.keymap.set("t", "<C-j>", "<C-\\><C-n><C-w><Down>", { noremap = true })
+vim.keymap.set("t", "<C-k>", "<C-\\><C-n><C-w><Up>", { noremap = true })
+vim.keymap.set("t", "<C-l>", "<C-\\><C-n><C-w><Right>", { noremap = true })
 
 -- Use C-t to change tabs
 vim.keymap.set("n", "<C-t>e", ":tabnew<CR>", { noremap = true })

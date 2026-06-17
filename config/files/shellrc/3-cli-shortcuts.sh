@@ -23,7 +23,7 @@ function wfind() {
 }
 
 function gg() {
-  rg --hidden --no-heading --smart-case --glob '!.git/*' --glob '!*/.git/*' "$@"
+  rg --hidden --no-heading --smart-case --glob '!.git/*' --glob '!*/.git/*' --glob '!*.ipynb' --glob '!*.svg' "$@"
 }
 
 function uriencode() {
@@ -53,3 +53,5 @@ function ep() {
 function cl() {
   clear
 }
+
+alias tf="terraform"

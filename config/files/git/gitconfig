@@ -8,8 +8,8 @@
   cmp = compare --url
   co = checkout
   cp = cherry-pick
-  df = diff --patience --find-renames --find-copies-harder
-  dc = diff --patience --find-renames --find-copies-harder --cached
+  df = diff --patience --find-renames --find-copies
+  dc = diff --patience --find-renames --find-copies --cached
   ft = fetch
   fto = fetch origin
   fx = commit --amend --no-edit
@@ -18,6 +18,8 @@
   ffsu = push-retry --set-upstream
   gr = grep --line-number
   lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cd) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+  lol = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cd) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+  loll = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cd) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative --all
   pl = pull
   ps = push
   pf = push --force-with-lease
@@ -32,7 +34,8 @@
   st = status --short --branch --ignore-submodules=dirty
   sw = switch
   unstage = reset HEAD --
-  wip = commit -m wip
+  wip = commit -m wip -n
+  wipa = commit -m wip -n --amend
 [color]
   ui = true
 [core]
@@ -84,3 +87,5 @@
   path = ~/.work.gitconfig
 [safe]
 	directory = /etc/zoox/calibration
+[includeIf "gitdir:/home/daniel/driving/**"]
+	path = ~/driving/.gitconfig
